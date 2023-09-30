@@ -1,0 +1,14 @@
+fn_call_width=80
+attr_fn_like_width=90
+struct_lit_wdith=60
+struct_variant_width=70
+chain_width=80
+combine_control_expr=true
+fn_single_line=true
+force_multiline_blocks=false
+format_strings=true
+hard_tabs=true
+imports_granularity=module
+overflow_delimited_expr=true
+group_imports=StdExternalCrate
+use_field_init_shorthand=true
