@@ -1,0 +1,19 @@
+ohmyzsh/ohmyzsh path:plugins/zoxide
+ohmyzsh/ohmyzsh path:lib/history.zsh
+ohmyzsh/ohmyzsh path:lib/completion.zsh
+ohmyzsh/ohmyzsh path:lib/key-bindings.zsh
+
+belak/zsh-utils path:history
+belak/zsh-utils path:utility
+belak/zsh-utils path:editor
+
+Aloxaf/fzf-tab
+
+zsh-users/zsh-completions
+zsh-users/zsh-syntax-highlighting
+
+belak/zsh-utils path:completion
+
+zsh-users/zsh-autosuggestions  kind:defer
+
+ohmyzsh/ohmyzsh path:plugins/history-substring-search

@@ -42,10 +42,9 @@ config.inactive_pane_hsb = {
 
 config.window_background_opacity = 0.95
 config.macos_window_background_blur = 20
-
+config.use_dead_keys = false
 config.enable_scroll_bar = false
 config.scrollback_lines = 100000
-
 config.adjust_window_size_when_changing_font_size = false
 config.hide_tab_bar_if_only_one_tab = true
 
@@ -93,8 +92,10 @@ end
 -- Key bindings
 
 config.keys = {
-	{ key = "RightArrow", mods = "ALT", action = act.SendString("\x1bf") },
-	{ key = "LeftArrow",  mods = "ALT", action = act.SendString("\x1bb") },
+	{ key = "RightArrow", mods = "ALT",            action = act.SendString("\x1bf") },
+	{ key = "LeftArrow",  mods = "ALT",            action = act.SendString("\x1bb") },
+	-- close pane
+	{ key = "q",          mods = "CTRL|SHIFT|ALT", action = act.CloseCurrentPane({ confirm = true }) },
 	-- move between split panes
 	split_nav("move", "h"),
 	split_nav("move", "j"),
