@@ -13,6 +13,7 @@ brew "code-minimap"
 brew "dust"
 brew "exa"
 brew "fd"
+brew "fnm"
 brew "fzf"
 brew "gdu", link: true 
 brew "glow"

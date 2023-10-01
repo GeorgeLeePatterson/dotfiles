@@ -87,22 +87,25 @@ poetry() {
   poetry "$@"
 }
 
-# THIS IS 90% OF LOAD TIME, RUN FUNCTION IF NECESSARY
-#nvm
-export NVM_DIR="$HOME/.nvm"
-if [[ -d "${NVM_DIR}" ]]; then
-  pyenv () {
-    if ! (($path[(Ie)${NVM_DIR}/bin])); then
-      path[1,0]="${NVM_DIR}/bin"
-    fi
-    [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-    [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  
-    nvm "$@"
-    unfunction nvm 
-  }
-else
-  unset NVM_DIR 
-fi
+# prefer using fnm over nvm
+eval "$(fnm env --use-on-cd)"
+
+# # THIS IS 90% OF LOAD TIME, RUN FUNCTION IF NECESSARY
+# #nvm
+# export NVM_DIR="$HOME/.nvm"
+# if [[ -d "${NVM_DIR}" ]]; then
+#   pyenv () {
+#     if ! (($path[(Ie)${NVM_DIR}/bin])); then
+#       path[1,0]="${NVM_DIR}/bin"
+#     fi
+#     [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+#     [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  
+#     nvm "$@"
+#     unfunction nvm 
+#   }
+# else
+#   unset NVM_DIR 
+# fi
 
 # cargo
 source "$HOME/.cargo/env"
