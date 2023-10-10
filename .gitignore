@@ -29,3 +29,5 @@ github-copilot/*
 .dotter/cache.toml
 .dotter/cache
 
+# Never include this nonsense
+.DS_Store
