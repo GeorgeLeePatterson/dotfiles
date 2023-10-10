@@ -1,0 +1,15 @@
+[helpers]
+
+[git]
+
+[git.files]
+"gitconfig" = "~/.gitconfig"
+
+[zsh]
+depends = ["git"]
+
+[zsh.files]
+"zshrc" = "~/.zshrc"
+"zshenv" = "~/.zshenv"
+
+[zsh.variables]

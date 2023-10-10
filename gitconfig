@@ -1,0 +1,22 @@
+[user]
+    name = George Patterson
+    email = patterson.george@gmail
+
+[alias]
+    cla = "clone --recurse-submodules"
+    pa = "pull --recurse-submodules"
+
+[credential]
+    helper = store
+
+[core]
+    pager = delta
+    autocrlf = input
+
+[delta]
+    line-numbers = true
+    hunk-header-style = omit
+    syntax-theme = zenburn
+    file-style = bold yellow ul
+    file-decoration-style = none
+    side-by-side = true

@@ -1,6 +1,5 @@
 ohmyzsh/ohmyzsh path:plugins/zoxide
 ohmyzsh/ohmyzsh path:lib/history.zsh
-ohmyzsh/ohmyzsh path:lib/completion.zsh
 ohmyzsh/ohmyzsh path:lib/key-bindings.zsh
 
 belak/zsh-utils path:history

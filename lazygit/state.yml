@@ -1,5 +1,7 @@
 lastupdatecheck: 0
 recentrepos:
+- /Users/georgepatterson/.config
+- /Users/georgepatterson/.config/astronvim
 - /Users/georgepatterson/.config/nvim/lua/user
 - /Users/georgepatterson/montops.ai/scraper
 startuppopupversion: 5
