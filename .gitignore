@@ -29,5 +29,8 @@ github-copilot/*
 .dotter/cache.toml
 .dotter/cache
 
+# No need to track, antidote generates
+.zsh_plugins.zsh
+
 # Never include this nonsense
 .DS_Store

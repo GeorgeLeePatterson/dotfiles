@@ -1,8 +1,8 @@
 local wezterm = require("wezterm")
 return {
     color_scheme = "Ayu Mirage",
-    -- font = wezterm.font("JetBrainsMono Nerd Font"),
-    font = wezterm.font("VictorMono Nerd Font"),
+    font = wezterm.font("JetBrainsMono Nerd Font"),
+    -- font = wezterm.font("VictorMono Nerd Font"),
     window_background_gradient = {
         orientation = "Vertical",
         colors = {
