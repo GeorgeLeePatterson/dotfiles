@@ -1,8 +1,47 @@
 local wezterm = require("wezterm")
+
+local function font(opts)
+	return wezterm.font_with_fallback({
+		opts,
+		"Symbols Nerd Font Mono"
+	})
+end
+
 return {
     color_scheme = "Ayu Mirage",
-    font = wezterm.font("JetBrainsMono Nerd Font"),
-    -- font = wezterm.font("VictorMono Nerd Font"),
+
+    --
+    -- Font settings
+    font = font("JetBrainsMono Nerd Font"),
+    -- font = font("VictorMono Nerd Font"),
+    font_rules = {	
+	    {
+	      italic = true,
+	      intensity = "Normal",
+	      font = font({
+	        family = "VictorMono Nerd Font",
+	        style = "Italic",
+	      }),
+	    },
+	    {
+	      italic = true,
+	      intensity = "Half",
+	      font = font({
+	        family = "VictorMono Nerd Font",
+	        weight = "DemiBold",
+	        style = "Italic",
+	      }),
+	    },
+	    {
+	      italic = true,
+	      intensity = "Bold",
+	      font = font({
+	        family = "VictorMono Nerd Font",
+	        weight = "Bold",
+	        style = "Italic",
+	      }),
+	    },
+    },
     window_background_gradient = {
         orientation = "Vertical",
         colors = {
