@@ -1,56 +1,58 @@
 local wezterm = require("wezterm")
 
 local function font(opts)
-	return wezterm.font_with_fallback({
-		opts,
-		"Symbols Nerd Font Mono"
-	})
+    return wezterm.font_with_fallback({
+        opts,
+        "Symbols Nerd Font Mono",
+    })
 end
 
 return {
-    color_scheme = "Ayu Mirage",
+    -- color_scheme = "Ayu Mirage",
+    color_scheme = "nightfox",
 
     --
     -- Font settings
     font = font("JetBrainsMono Nerd Font"),
     -- font = font("VictorMono Nerd Font"),
-    font_rules = {	
-	    {
-	      italic = true,
-	      intensity = "Normal",
-	      font = font({
-	        family = "VictorMono Nerd Font",
-	        style = "Italic",
-	      }),
-	    },
-	    {
-	      italic = true,
-	      intensity = "Half",
-	      font = font({
-	        family = "VictorMono Nerd Font",
-	        weight = "DemiBold",
-	        style = "Italic",
-	      }),
-	    },
-	    {
-	      italic = true,
-	      intensity = "Bold",
-	      font = font({
-	        family = "VictorMono Nerd Font",
-	        weight = "Bold",
-	        style = "Italic",
-	      }),
-	    },
-    },
-    window_background_gradient = {
-        orientation = "Vertical",
-        colors = {
-            "#03070E",
-            "#010608",
+    font_rules = {
+        {
+            italic = true,
+            intensity = "Normal",
+            font = font({
+                family = "VictorMono Nerd Font",
+                style = "Italic",
+            }),
+        },
+        {
+            italic = true,
+            intensity = "Half",
+            font = font({
+                family = "VictorMono Nerd Font",
+                weight = "DemiBold",
+                style = "Italic",
+            }),
+        },
+        {
+            italic = true,
+            intensity = "Bold",
+            font = font({
+                family = "VictorMono Nerd Font",
+                weight = "Bold",
+                style = "Italic",
+            }),
         },
     },
+    -- An example of how to give the background a gradient
+    -- window_background_gradient = {
+    --     orientation = "Vertical",
+    --     colors = {
+    --         "#03070E",
+    --         "#010608",
+    --     },
+    -- },
     window_frame = {
-        font = wezterm.font({ family = "Noto Sans", weight = "Regular" }),
+        font = wezterm.font({ family = "VictorMono Nerd Font", weight = "Regular" }),
     },
     underline_thickness = "1.4pt",
     underline_position = "-2pt",
@@ -63,9 +65,9 @@ return {
         brightness = 0.7,
     },
     window_padding = {
-        left = "8px",
-        right = "8px",
-        top = "8px",
-        bottom = "2px",
+        left = 0, -- "8px",
+        right = 0, -- "8px",
+        top = 0, -- "8px",
+        bottom = 0, -- "2px",
     },
 }
