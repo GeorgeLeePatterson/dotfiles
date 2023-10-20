@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+macchina | lolcat -p 60 -F .15

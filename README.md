@@ -1,6 +1,65 @@
 # My Dots 🍬 🐜
 
-Neovim (AstroNvim) dot files are [here](https://github.com/GeorgeLeePatterson/astrovim)
+The configurations I use to setup my environments for development productivity.
+
+> NOTE: MacOS configuration. May work on other system, doubt it.
+
+The configuration is meant to be as simple as possible: `.config` directory, already configured, that then uses `dotter` to deploy as little as possible (namely zsh related dots).
+
+> NOTE: The `dotter` executable is included in the repo (`$HOME/.config/dotter`).
+
+I prefer Rust tools when possible, so most of the tools configured are written in Rust.
+
+## Neovim
+
+Neovim (AstroNvim-based) dot files are [here](https://github.com/GeorgeLeePatterson/astrovim)
+
+> NOTE: Will be moving to a fully custom setup at some point, will change submodule configuration.
+
+## Screenshots
+
+#### Neovim
+
+Dashboard
+![Dashboard](https://github.com/GeorgeLeePatterson/astrovim/blob/main/assets/dashboard.png)
+
+Editor
+![Editor](https://github.com/GeorgeLeePatterson/astrovim/blob/main/assets/editor.png)
+
+Wezterm integration
+![Wezterm integration](https://github.com/GeorgeLeePatterson/astrovim/blob/main/assets/wezterm.png)
+
+#### Shell
+
+- Terminal emulator: [Wezterm](https://wezfurlong.org/wezterm) (🦀)
+- Prompt: [Starship](https://starship.rs/) (🦀)
+- Shell: ZSH, [Antidote plugin manager](https://github.com/mattmc3/antidote)
+
+#### Tools
+
+- zoxide (🦀): Switch between directories fast
+- neovide (🦀): Excellent, fast, and beautiful Neovim GUI.
+- bottom (🦀): Resource utilization
+- xsv (🦀): Best command line csv parsing, querying, and more
+- fd (🦀): Faster find alternative
+- ripgrep (🦀): Blazing fast grep alternative
+- dust (🦀): Better du alternative
+- eza (🦀): Better ls
+- bat (🦀): Better cat
+- broot (🦀): Interactive terminal file browser
+- atuin (🦀): Command history (ctrl-r replacement)
+- tokei (🦀): Count lines of code
+- delta (🦀): Better git diff terminal tool
+- just (🦀): Awesome make like alternative
+- fnm (🦀): Nvm alternative
+- dotter (🦀): Dotfile management tool (executable is included)
+- glow: Preview markdown in the terminal
+- fzf: Command line fuzzy finder
+- btop: C++ based resource monitor (I use this a LOT)
+- pyenv: Manage python environments
+- poetry: Python project management
+- jq: Excellent command line json parser
+- And many more
 
 ## Install
 

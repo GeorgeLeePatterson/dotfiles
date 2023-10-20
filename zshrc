@@ -143,3 +143,11 @@ upgrade_wezterm()
 # create completions
 autoload -Uz compinit && compinit
 # autoload -Uz promptinit && promptinit
+
+# Startup splash
+# To configure macchina (to change ascii for example), modify tomls under ~/.config/macchina
+if [ command -v macchina ] && [ test -f ~/.config/macchina/startup ]
+then
+    source ~/.config/macchina/startup;
+fi
+
