@@ -68,12 +68,13 @@ eval "$(fnm env)"
 # Setting some aliases here for neovim (no idea why they don't get sourced)
 
 # gdu
-{{#if (is_executable "gdu-go")}}
-alias gdu='gdu-go'
-{{/if}}
+if which gdu-go > /dev/null 2>&1; then
+  alias gdu='gdu-go'
+fi
 
-{{#if (is_executable "bat")}}
-alias cat="bat"
-{{/if}}
+# bat
+if which bat > /dev/null 2>&1; then
+  alias cat="bat"
+fi
 
 unsetopt all_export

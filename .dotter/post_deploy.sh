@@ -1,8 +1,10 @@
 #!/bin/zsh
 
+BREW_BIN_PATH=/opt/homebrew/bin
+PATH="$BREW_BIN_PATH;$HOME/.cargo/bin;/usr/local/bin;$HOME/.local/bin;$PATH"
+
 # test if zsh works
 echo "Sourcing zsh files"
-exec /bin/zsh
 /bin/zsh -c 'source ~/.zshenv' || "could not source zshenv"
 /bin/zsh -c 'source ~/.zshrc' || "could not source zshrc"
 
@@ -47,3 +49,8 @@ fi
 
 # make sure zsh shell
 # chsh -s $(which zsh)
+
+# test if zsh works
+echo "Sourcing zsh files again"
+/bin/zsh -c 'source ~/.zshenv' || "could not source zshenv"
+/bin/zsh -c 'source ~/.zshrc' || "could not source zshrc"

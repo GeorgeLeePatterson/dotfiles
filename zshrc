@@ -73,84 +73,86 @@ hashi_comp() {
 # ALIASES			  			   #
 # ########################
 
-{{#if (is_executable "eza")}}
 # eza aliases
-alias ls='eza -a -1'
-alias la='eza -1 --level=1 --tree --icons --classify --colour=auto --sort=name --group-directories-first --header --modified --created --git --binary -la'
-alias ll="eza -1 --level=2 --icons --tree --ignore-glob='target|node_modules|venv|env|.vscode|.DS_Store|.cache|__pycache__' --classify --colour=auto --sort=name --group-directories-first --header --modified --created --git --binary --group -la"
-{{/if}}
+if which eza > /dev/null 2>&1; then
+    alias ls='eza -a -1'
+    alias la='eza -1 --level=1 --tree --icons --classify --colour=auto --sort=name --group-directories-first --header --modified --created --git --binary -la'
+    alias ll="eza -1 --level=2 --icons --tree --ignore-glob='target|node_modules|venv|env|.vscode|.DS_Store|.cache|__pycache__' --classify --colour=auto --sort=name --group-directories-first --header --modified --created --git --binary --group -la"
+fi
 
 # broot
-{{#if (is_executable "broot")}}
-alias broot="broot -dsi"
-{{/if}}
+if which broot > /dev/null 2>&1; then
+    alias broot="broot -dsi"
+fi
 
 # gdu
-{{#if (is_executable "gdu-go")}}
-alias gdu='gdu-go'
-{{/if}}
+if which gdu-go > /dev/null 2>&1; then
+    alias gdu='gdu-go'
+fi
+
+# bat
+if which bat > /dev/null 2>&1; then
+    alias cat="bat"
+fi
 
 # ########################
 # APPLICATION SETUP      #
 # ########################
 
 # atuin
-{{#if (is_executable "atuin")}}
-eval "$(atuin init zsh --disable-up-arrow)"
-{{/if}}
+if which atuin > /dev/null 2>&1; then
+    eval "$(atuin init zsh --disable-up-arrow)"
+fi
 
 # broot => br
-{{#if (is_executable "broot")}}
-function br {
-    local cmd cmd_file code
-    cmd_file=$(mktemp)
-    if broot --outcmd "$cmd_file" "$@"; then
-        cmd=$(<"$cmd_file")
-        command rm -f "$cmd_file"
-        eval "$cmd"
-    else
-        code=$?
-        command rm -f "$cmd_file"
-        return "$code"
-    fi
-}
-{{/if}}
+if which broot > /dev/null 2>&1; then
+    function br {
+        local cmd cmd_file code
+        cmd_file=$(mktemp)
+        if broot --outcmd "$cmd_file" "$@"; then
+            cmd=$(<"$cmd_file")
+            command rm -f "$cmd_file"
+            eval "$cmd"
+        else
+            code=$?
+            command rm -f "$cmd_file"
+            return "$code"
+        fi
+    }
+fi
 
 # starship
-{{#if (is_executable "starship")}}
-eval "$(starship init zsh)"
-{{/if}}
+if which starship > /dev/null 2>&1; then
+    eval "$(starship init zsh)"
+fi
 
 # CD
-{{#if (is_executable "zoxide")}}
-eval "$(zoxide init {{#if dotter.packages.zsh}}zsh{{else}}bash{{/if}})"
-{{/if}}
-cd ()
-{
-    # Pass all arguments to cd
-    {{#if (is_executable "zoxide")}}z{{else}}builtin cd{{/if}} "$@" || return $?
-    ls
-}
+if which zoxide > /dev/null 2>&1; then
+    eval "$(zoxide init {{#if dotter.packages.zsh}}zsh{{else}}bash{{/if}})"
+    cd ()
+    {
+        z "$@" || return $?
+        ls
+    }
+fi
 
-{{#if (is_executable "bat")}}
-alias cat="bat"
-{{/if}}
 
 # fzf
-{{#if (is_executable "fzf")}}
-j ()  # Navigate with fzf
-{
-    {{#if (is_executable fd)}}
-    find_command='fd . ~ --type d'
-    {{else}}
-    # Settle for not hiding gitignored stuff
-    find_command='find ~ -type d'
-    {{/if}}
-    dir=$(eval $find_command | fzf --preview 'tree -CF -L 2 {+1}')
-    fzf_return=$?
-    [ $fzf_return = 0 ] && cd $dir || return $fzf_return
-}
-{{/if}}
+if which fzf > /dev/null 2>&1; then
+    j ()  # Navigate with fzf
+    {
+        # Settle for not hiding gitignored stuff
+        find_command='find ~ -type d'
+
+        if which fd > /dev/null 2>&1; then
+            find_command='fd . ~ --type d'
+        fi
+
+        dir=$(eval $find_command | fzf --preview 'tree -CF -L 2 {+1}')
+        fzf_return=$?
+        [ $fzf_return = 0 ] && cd $dir || return $fzf_return
+    }
+fi
 
 # Simple function to upgrade wezterm if on nightly
 upgrade_wezterm()

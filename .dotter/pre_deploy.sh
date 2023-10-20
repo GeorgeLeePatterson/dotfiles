@@ -1,6 +1,4 @@
-#!/bin/bash
-
-exec /bin/zsh
+#!/bin/zsh
 
 # Backup existing files
 backup_dir=~/.dotfile_bk
