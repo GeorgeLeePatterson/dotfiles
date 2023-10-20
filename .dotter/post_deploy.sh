@@ -3,11 +3,6 @@
 BREW_BIN_PATH=/opt/homebrew/bin
 PATH="$BREW_BIN_PATH;$HOME/.cargo/bin;/usr/local/bin;$HOME/.local/bin;$PATH"
 
-# # test if zsh works
-# echo "Sourcing zsh files"
-# /bin/zsh -c 'source ~/.zshenv' || "could not source zshenv"
-# /bin/zsh -c 'source ~/.zshrc' || "could not source zshrc"
-
 # install docker separately
 {{#if (is_executable "docker")}}
 echo "Docker installed"
@@ -50,7 +45,7 @@ fi
 # make sure zsh shell
 # chsh -s $(which zsh)
 
-# # test if zsh works
-# echo "Sourcing zsh files again"
-# /bin/zsh -c 'source ~/.zshenv' || "could not source zshenv"
-# /bin/zsh -c 'source ~/.zshrc' || "could not source zshrc"
+echo "\n\nTo use the new shell updates, be sure to reinitialize zsh:"
+echo "\t==> source ~/.zshenv"
+echo "\t\t\tor"
+echo "\t==> exec /bin/zsh"
