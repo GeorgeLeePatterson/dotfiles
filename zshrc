@@ -160,7 +160,7 @@ install_fonts()
 # To configure macchina (to change ascii for example), modify tomls under ~/.config/macchina
 if [[ -f ~/.config/macchina/startup ]]; then
     source ~/.config/macchina/startup
-elif which macchina
+elif which macchina > /dev/null 2>&1; then
     macchina
 fi
 
