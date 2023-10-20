@@ -80,9 +80,9 @@ alias la='eza -1 --level=1 --tree --icons --classify --colour=auto --sort=name -
 alias ll="eza -1 --level=2 --icons --tree --ignore-glob='target|node_modules|venv|env|.vscode|.DS_Store|.cache|__pycache__' --classify --colour=auto --sort=name --group-directories-first --header --modified --created --git --binary --group -la"
 {{/if}}
 
-# broot alias
+# broot
 {{#if (is_executable "broot")}}
-alias br='broot -dsi'
+alias broot="broot -dsi"
 {{/if}}
 
 # gdu
@@ -99,9 +99,21 @@ alias gdu='gdu-go'
 eval "$(atuin init zsh --disable-up-arrow)"
 {{/if}}
 
-# broot
+# broot => br
 {{#if (is_executable "broot")}}
-source "$HOME/.config/broot/launcher/bash/br"
+function br {
+    local cmd cmd_file code
+    cmd_file=$(mktemp)
+    if broot --outcmd "$cmd_file" "$@"; then
+        cmd=$(<"$cmd_file")
+        command rm -f "$cmd_file"
+        eval "$cmd"
+    else
+        code=$?
+        command rm -f "$cmd_file"
+        return "$code"
+    fi
+}
 {{/if}}
 
 # starship
