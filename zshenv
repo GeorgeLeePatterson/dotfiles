@@ -11,6 +11,7 @@ export PAGER=less
 export XDG_CONFIG_HOME=$HOME/.config
 export KERNEL_NAME=$( uname | tr '[:upper:]' '[:lower:]' )
 export TERM=wezterm
+export ZSH_ENV_SOURCED=1 # Helps to keep track when this occurs
 
 # fzf configuration
 export FZF_DEFAULT_COMMAND='rg --no-messages --files --no-ignore --hidden --follow --glob "!.git/*"'
