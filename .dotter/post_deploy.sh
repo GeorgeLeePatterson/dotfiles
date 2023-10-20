@@ -29,13 +29,6 @@ fi
 # create local script dir
 mkdir -p ~/.local/bin
 
-# install starship
-{{#if (is_executable "starship")}}
-echo "Starship installed"
-{{else}}
-curl -sS https://starship.rs/install.sh | sh
-{{/if}}
-
 # configure gdu
 {{#if (is_executable "gdu")}}
 echo "gdu linked"

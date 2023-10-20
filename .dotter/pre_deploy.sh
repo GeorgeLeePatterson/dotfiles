@@ -29,3 +29,10 @@ echo "Rust installed"
 {{else}}
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 {{/if}}
+
+# install starship
+{{#if (is_executable "starship")}}
+echo "Starship installed"
+{{else}}
+curl -sS https://starship.rs/install.sh | sh -s -- -y
+{{/if}}
