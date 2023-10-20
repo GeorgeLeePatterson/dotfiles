@@ -54,8 +54,12 @@ export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/opt/homebrew/share/zsh-syntax-highlightin
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion) 
 
 # bind up/down to substring history
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search # history-substring-search-up
+bindkey '^[[B' down-line-or-beginning-search # history-substring-search-down
 
 # hashicorp setup
 hashi_comp() {
@@ -144,10 +148,20 @@ upgrade_wezterm()
 autoload -Uz compinit && compinit
 # autoload -Uz promptinit && promptinit
 
+# install nerdfonts helper 
+install_fonts()
+{
+  brew tap homebrew/cask-fonts
+  brew search '/font-.*-nerd-font/' | awk '{ print $1 }' | xargs -I{} brew install --cask {} || true
+}
+
 # Startup splash
 # To configure macchina (to change ascii for example), modify tomls under ~/.config/macchina
-if [ command -v macchina ] && [ test -f ~/.config/macchina/startup ]
-then
-    source ~/.config/macchina/startup;
+if [[ -f ~/.config/macchina/startup ]]; then
+    source ~/.config/macchina/startup
+elif which macchina > /dev/null 2>&1; then
+    macchina
 fi
 
+# Keep track of dotter initialized
+export DOTTER_DEPLOYED=1

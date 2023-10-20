@@ -65,6 +65,8 @@ Wezterm integration
 
 ### Install brew packages, setup ZSH, configure Neovim, setup Bitwarden (optional)
 
+> NOTE: Dotfiles, pre-deploy, and post-deploy are all handled by [dotter](https://github.com/SuperCuber/dotter)
+
 1. Make backups of `$HOME/.config`, `$HOME/.local/share/nvim`, `$HOME/.local/state/nvim`
 2. Clone repository into $HOME/.config:
 
