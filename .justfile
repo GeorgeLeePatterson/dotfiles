@@ -21,7 +21,7 @@ default:
 
 # Update astronvim
 update-git:
-    @cd ~/.config && git pa
+    @cd ~/.config && git pull --recurse-submodules
 
 # install and configure bitwarden
 bw:
