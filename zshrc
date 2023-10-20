@@ -78,14 +78,11 @@ hashi_comp() {
 alias ls='eza -a -1'
 alias la='eza -1 --level=1 --tree --icons --classify --colour=auto --sort=name --group-directories-first --header --modified --created --git --binary -la'
 alias ll="eza -1 --level=2 --icons --tree --ignore-glob='target|node_modules|venv|env|.vscode|.DS_Store|.cache|__pycache__' --classify --colour=auto --sort=name --group-directories-first --header --modified --created --git --binary --group -la"
-{{else}}
-alias ls="ls --color-auto"
-alias la="ls -la"
 {{/if}}
 
 # broot alias
-{{#if (is_executable "br")}}
-alias br='br -dsi'
+{{#if (is_executable "broot")}}
+alias br='broot -dsi'
 {{/if}}
 
 # gdu
@@ -103,12 +100,14 @@ eval "$(atuin init zsh --disable-up-arrow)"
 {{/if}}
 
 # broot
-{{#if (is_executable "br")}}
+{{#if (is_executable "brroot")}}
 source "$HOME/.config/broot/launcher/bash/br"
 {{/if}}
 
 # starship
+{{#if (is_executable "starship")}}
 eval "$(starship init zsh)"
+{{/if}}
 
 # CD
 {{#if (is_executable "zoxide")}}
@@ -161,7 +160,7 @@ install_fonts()
 # To configure macchina (to change ascii for example), modify tomls under ~/.config/macchina
 if [[ -f ~/.config/macchina/startup ]]; then
     source ~/.config/macchina/startup
-elif which macchina > /dev/null 2>&1; then
+elif which macchina
     macchina
 fi
 
