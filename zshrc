@@ -37,6 +37,9 @@ zstyle ':completion:*' special-dirs false
 # show hidden files in completion
 setopt glob_dots
 
+# make sure brew is in path 
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 #
 # PLUGINS
 #
