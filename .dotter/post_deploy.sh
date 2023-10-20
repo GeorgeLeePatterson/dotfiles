@@ -23,7 +23,7 @@ if [[ -z "${DOTTER_DEPLOYED}" ]]
 then
   install_fonts
 else
-  echo "\n\tSkipping fonts as dotter has already been deployed.\n\t==> To re-run, call command 'install_fonts'\n"
+  echo "\n\n\tSkipping fonts as dotter has already been deployed.\n\t==> To re-run, call command 'install_fonts'\n\n"
 fi
 
 # create local script dir
