@@ -11,27 +11,29 @@ mv -hf "{{this}}" ~/.dotfile_bk/{{@key}} || echo "Could not move {{@key}}" && ex
 {{/each}}
 
 # install homebrew
-{{#if (is_executable "brew")}}
+{{#if (is_executable "/opt/homebrew/bin/brew")}}
 echo "Homebrew installed"
 {{else}}
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 {{/if}}
 
+{{#if (is_executable "/opt/homebrew/bin/brew")}}
 # install brewfile
+BREW_BIN_PATH=/opt/homebrew/bin
 export HOMEBREW_BUNDLE_BREWFILE=~/.config/.Brewfile
-export HOMEBREW_CASK_OPTS="--appdir=$HOME/MyApplications"
-brew tap Homebrew/bundle
-brew bundle --file $HOMEBREW_BUNDLE_BREWFILE -v
+$BREW_BIN_PATH/brew tap Homebrew/bundle
+$BREW_BIN_PATH/brew bundle --file $HOMEBREW_BUNDLE_BREWFILE -v
+{{/if}}
 
 # install rust
-{{#if (is_executable "rustup")}}
+{{#if (is_executable "~/.cargo/bin/rustup")}}
 echo "Rust installed"
 {{else}}
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path -y --profile default
 {{/if}}
 
 # install starship
-{{#if (is_executable "starship")}}
+{{#if (is_executable "/usr/local/bin/starship")}}
 echo "Starship installed"
 {{else}}
 curl -sS https://starship.rs/install.sh | sh -s -- -y
