@@ -5,7 +5,7 @@ set shell := ["zsh", "-cu"]
 # Variables
 
 copilot_user := "GeorgeLeePatterson"
-copilot_token := `rbw get COPILOT_OAUTH_TOKEN || ''`
+copilot_token := `which rbw > /dev/null 2>&1 && rbw get COPILOT_OAUTH_TOKEN || echo ""`
 
 # Bitwarden
 
@@ -35,6 +35,15 @@ bw:
 
 # store copilot token
 authorize-copilot:
+    #!/usr/bin/env bash
+    set -euxo pipefail
+
+    TOKEN={{ copilot_token }}
+    if [ -z $TOKEN ]; then
+     echo "No token found, please set copilot_token or configure bitwarden (rbw)";
+     exit 1;
+    fi
+
     test -f ~/.config/github-copilot/hosts.json \
      && echo "Copilot setup" \
      || echo "{\"github.com\":{\"user\":\"{{ copilot_user }}\",\"oauth_token\":\"{{ copilot_token }}\"}}" > ~/.config/github-copilot/hosts.json
