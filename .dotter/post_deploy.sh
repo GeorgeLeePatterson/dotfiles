@@ -2,8 +2,8 @@
 
 # test if zsh works
 echo "Sourcing zsh files"
-source ~/.zshenv || "could not source zshenv"
-source ~/.zshrc || "could not source zshrc"
+/bin/zsh -c 'source ~/.zshenv' || "could not source zshenv"
+/bin/zsh -c 'source ~/.zshrc' || "could not source zshrc"
 
 # install docker separately
 {{#if (is_executable "docker")}}
