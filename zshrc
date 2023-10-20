@@ -100,7 +100,7 @@ eval "$(atuin init zsh --disable-up-arrow)"
 {{/if}}
 
 # broot
-{{#if (is_executable "brroot")}}
+{{#if (is_executable "broot")}}
 source "$HOME/.config/broot/launcher/bash/br"
 {{/if}}
 
