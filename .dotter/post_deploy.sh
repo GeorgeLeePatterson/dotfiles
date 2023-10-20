@@ -2,28 +2,8 @@
 
 # test if zsh works
 echo "Sourcing zsh files"
-/bin/zsh -c 'source ~/.zshenv || "could not source zshenv"'
-/bin/zsh -c 'source ~/.zshrc || "could not source zshrc"'
-
-# install rust
-{{#if (is_executable "rustup")}}
-echo "Rust installed"
-{{else}}
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-{{/if}}
-
-# install homebrew
-{{#if (is_executable "brew")}}
-echo "Homebrew installed"
-{{else}}
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-{{/if}}
-
-# install brewfile
-export HOMEBREW_BUNDLE_BREWFILE=~/.config/.Brewfile
-export HOMEBREW_CASK_OPTS="--appdir=$HOME/MyApplications"
-brew tap Homebrew/bundle
-brew bundle --file $HOMEBREW_BUNDLE_BREWFILE -v
+source ~/.zshenv || "could not source zshenv"
+source ~/.zshrc || "could not source zshrc"
 
 # install docker separately
 {{#if (is_executable "docker")}}

@@ -4,6 +4,8 @@
 #
 #
 
+export ZSH_RC_SOURCED=1 # Helps to keep track when this occurs
+
 # history
 HISTFILE="${ZDOTDIR:-$HOME}/.zsh_history"       # The path to the history file.
 HISTSIZE=1000000000              # The maximum number of events to save in the internal history.
@@ -139,6 +141,7 @@ j ()  # Navigate with fzf
 }
 {{/if}}
 
+# Simple function to upgrade wezterm if on nightly
 upgrade_wezterm()
 {
   brew upgrade --cask wezterm-nightly --no-quarantine --greedy-latest
@@ -146,7 +149,6 @@ upgrade_wezterm()
 
 # create completions
 autoload -Uz compinit && compinit
-# autoload -Uz promptinit && promptinit
 
 # install nerdfonts helper 
 install_fonts()
