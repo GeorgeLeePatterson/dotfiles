@@ -34,3 +34,8 @@ github-copilot/*
 
 # Never include this nonsense
 .DS_Store
+
+# Wezterm
+
+# this is configured per system
+wezterm/ssh-domains.lua 
