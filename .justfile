@@ -19,9 +19,12 @@ gh_key := ""
 default:
     @just --choose
 
-# Update astronvim
-update-git:
+# Update Neovim
+update-neovim:
     @cd ~/.config && git pull --recurse-submodules
+    ln -s ~/.config/nvim-user ~/.config/nvim/user
+    ln -s ~/.config/nvim-user/ftplugin ~/.config/nvim/ftplugin/
+    ln -s ~/.config/nvim-user/after ~/.config/nvim/after/
 
 # install and configure bitwarden
 bw:
@@ -73,7 +76,7 @@ gh-ssh-key:
 
 # All commands
 all:
-    @just update-git
+    @just update-neovim
     just bw
     just authorize-copilot
     echo "\n\t** GH SSH KEY NOT RUN! Run 'just gh-ssh-key' and provide 'gh_pub' and 'gh_key' **"

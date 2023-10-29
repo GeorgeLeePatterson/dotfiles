@@ -18,7 +18,7 @@ Neovim (AstroNvim-based) dot files are [here](https://github.com/GeorgeLeePatter
 
 ## Screenshots
 
-#### Neovim
+### Neovim Screens
 
 Dashboard
 ![Dashboard](https://github.com/GeorgeLeePatterson/astrovim/blob/main/assets/dashboard.png)
@@ -29,13 +29,13 @@ Editor
 Wezterm integration
 ![Wezterm integration](https://github.com/GeorgeLeePatterson/astrovim/blob/main/assets/wezterm.png)
 
-#### Shell
+### Shell
 
 - Terminal emulator: [Wezterm](https://wezfurlong.org/wezterm) (🦀)
 - Prompt: [Starship](https://starship.rs/) (🦀)
 - Shell: ZSH, [Antidote plugin manager](https://github.com/mattmc3/antidote)
 
-#### Tools
+### Tools
 
 - zoxide (🦀): Switch between directories fast
 - neovide (🦀): Excellent, fast, and beautiful Neovim GUI.
@@ -70,29 +70,29 @@ Wezterm integration
 1. Make backups of `$HOME/.config`, `$HOME/.local/share/nvim`, `$HOME/.local/state/nvim`
 2. Clone repository into $HOME/.config:
 
-```sh
+```bash
 git clone https://github.com/GeorgeLeePatterson/dotfiles $HOME/.config
 ```
 
 3. Run installer (dotter 🦀): NOTE: may take a while, the .Brewfile will install all packages
 
-```sh
+```bash
 $HOME/.config/dotter deploy
 ```
 
 4. Source zshrc
 
-```sh
+```bash
 source ~/.zshenv && source ~/.zshrc
 ```
 
 5. Run additional tasks using [just](https://github.com/casey/just)
 
-```sh
+```bash
 cd $HOME/.config
 
-# Update gh repo
-just update-git
+# Update Neovim, create symlinks
+just update-neovim
 
 # If you have bitwarden, you can use the following to
 # setup bw, rbw, and ssh keys

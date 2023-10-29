@@ -1,3 +1,4 @@
+---@diagnostic disable: bad_string_escape
 local wezterm = require("wezterm")
 local split_nav = require("utils").split_nav
 local act = wezterm.action
@@ -5,6 +6,7 @@ local act = wezterm.action
 -- Key bindings
 return {
     keys = {
+        ---@diagnostic disable-next-line: bad_string_escape
         { key = "RightArrow", mods = "ALT",            action = act.SendString("\x1bf") },
         { key = "LeftArrow",  mods = "ALT",            action = act.SendString("\x1bb") },
         -- close pane
@@ -20,4 +22,8 @@ return {
         split_nav("resize", "k"),
         split_nav("resize", "l"),
     },
+
+    -- modifiers
+    -- send_composed_key_when_left_alt_is_pressed = true,
+    -- send_composed_key_when_right_alt_is_pressed = true,
 }

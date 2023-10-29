@@ -47,5 +47,14 @@ fi
 
 echo "\n\nTo use the new shell updates, be sure to reinitialize zsh:"
 echo "\t==> source ~/.zshenv"
-echo "\t\t\tor"
+echo "\t\t\t\tor"
 echo "\t==> exec /bin/zsh"
+
+echo "\n\n**************************"
+echo "To setup Neovim, Bitwarden, or Copilot, run the `justfile` by executing `just` in the `~/.config` directory"
+echo "**************************\n\n"
+
+# Run dotter in the background
+# nohup ~/.config/dotter watch &
+
+
