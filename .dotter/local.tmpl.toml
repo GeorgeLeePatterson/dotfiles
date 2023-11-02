@@ -4,8 +4,6 @@ packages = ["git", "zsh"]
 [files]
 
 [variables]
-
 # Git overrides
-[git.variables]
 git_user_name = ""
 git_user_email = ""
