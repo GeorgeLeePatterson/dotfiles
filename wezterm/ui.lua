@@ -12,7 +12,8 @@ return {
 
 	-- color_scheme = "Ayu Mirage",
 	-- color_scheme = "nightfox",
-	color_scheme = "Gruvbox dark, hard (base16)",
+	-- color_scheme = "Gruvbox dark, hard (base16)",
+	color_scheme = 'Gruvbox Material (Gogh)',
 
 	-- [[ Font settings ]]
 

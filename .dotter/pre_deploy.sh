@@ -4,10 +4,10 @@
 backup_dir=~/.dotfile_bk
 
 {{#each dotter.files}}
-{{#if (command_success "test -f {{this}}")}}
+if test -f {{this}}; then
 mkdir -p $backup_dir/{{@key}}
-mv -hf "{{this}}" ~/.dotfile_bk/{{@key}} || echo "Could not move {{@key}}" && exit 1
-{{/if}}
+mv -hf "{{this}}" ~/.dotfile_bk/{{@key}} && echo "Moved {{@key}}: {{this}}" || echo "Could not move {{@key}}"
+fi
 {{/each}}
 
 # install homebrew

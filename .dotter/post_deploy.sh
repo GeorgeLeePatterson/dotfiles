@@ -51,7 +51,7 @@ echo "\t\t\t\tor"
 echo "\t==> exec /bin/zsh"
 
 echo "\n\n**************************"
-echo "To setup Neovim, Bitwarden, or Copilot, run the `justfile` by executing `just` in the `~/.config` directory"
+echo "To setup Neovim, Bitwarden, or Copilot, run the 'justfile' by executing 'just' in the '~/.config' directory"
 echo "**************************\n\n"
 
 # Run dotter in the background

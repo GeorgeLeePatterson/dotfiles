@@ -63,8 +63,11 @@ autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
-bindkey '^[[A' up-line-or-beginning-search # history-substring-search-up
-bindkey '^[[B' down-line-or-beginning-search # history-substring-search-down
+
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+# bindkey '^[[A' up-line-or-beginning-search # history-substring-search-up
+# bindkey '^[[B' down-line-or-beginning-search # history-substring-search-down
 
 # hashicorp setup
 hashi_comp() {

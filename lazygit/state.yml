@@ -1,8 +1,8 @@
 lastupdatecheck: 0
 recentrepos:
 - /Users/georgepatterson/.config
-- /Users/georgepatterson/.config/nvim-user
 - /Users/georgepatterson/montops.ai/scraper
+- /Users/georgepatterson/.config/nvim-user
 - /Users/georgepatterson/.config/nvim/lua/user
 startuppopupversion: 5
 customcommandshistory: []
