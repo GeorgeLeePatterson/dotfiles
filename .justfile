@@ -22,7 +22,7 @@ default:
 # Update Neovim
 update-neovim:
     @cd ~/.config && git pull --recurse-submodules
-    ln -s ~/.config/nvim-user ~/.config/nvim/user || true
+    ln -s ~/.config/nvim-user ~/.config/nvim/lua/user || true
     ln -s ~/.config/nvim-user/ftplugin ~/.config/nvim/ftplugin/ || true
     ln -s ~/.config/nvim-user/after ~/.config/nvim/after/ || true
 
