@@ -1,11 +1,8 @@
 # Don't store sensitive data
 github-copilot/*
 
-# Brew
+# [[ Brew ]]
 .Brewfile.lock.json
-
-# antidote install .zsh_plugins.txt to .zsh_plugins.zsh
-.zsh_plugins.zsh
 
 # # Could just force-add these files and leave this as '*', but this way I have a
 # # nice explicit list for documentation's sake.
@@ -19,6 +16,8 @@ github-copilot/*
 .bash_local
 .bash_logout
 # !.profile
+
+# [[ Git ]]
 #
 # # Git aliases, identification info
 !.gitconfig
@@ -28,9 +27,15 @@ github-copilot/*
 !.gitexcludes
 !.gitignore
 
-# dotter 
+# [[ dotter ]]
 .dotter/cache.toml
 .dotter/cache
+# local configuration specific to machine
+.dotter/local.toml 
+
+# [[ Zsh ]]
+# antidote install .zsh_plugins.txt to .zsh_plugins.zsh
+.zsh_plugins.zsh
 
 # No need to track, antidote generates
 .zsh_plugins.zsh
@@ -38,7 +43,7 @@ github-copilot/*
 # Never include this nonsense
 .DS_Store
 
-# Wezterm
+# [[ Wezterm ]]
 
 # this is configured per system
 wezterm/ssh-domains.lua 

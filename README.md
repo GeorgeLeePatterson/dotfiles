@@ -63,48 +63,63 @@ Wezterm integration
 
 ## Install
 
-### Install brew packages, setup ZSH, configure Neovim, setup Bitwarden (optional)
+### Dotter: Install brew packages, setup ZSH, configure Neovim, setup Bitwarden (optional)
 
 > NOTE: Dotfiles, pre-deploy, and post-deploy are all handled by [dotter](https://github.com/SuperCuber/dotter)
 
 1. Make backups of `$HOME/.config`, `$HOME/.local/share/nvim`, `$HOME/.local/state/nvim`
+
+   ```bash
+   # Example script to backup list of files
+   for f in "$HOME/.config" "$HOME/.local/share/nvim" "$HOME/.local/state/nvim"; do mv ${f} "${f}.bak" || exit 1; done;
+   ```
+
 2. Clone repository into $HOME/.config:
 
-```bash
-git clone https://github.com/GeorgeLeePatterson/dotfiles $HOME/.config
-```
+   ```bash
+   git clone https://github.com/GeorgeLeePatterson/dotfiles $HOME/.config
+   ```
 
-3. Run installer (dotter 🦀): NOTE: may take a while, the .Brewfile will install all packages
+3. Copy and rename `.dotter/local.tmpl.toml` to `.dotter/local.toml` and update your git user name and email (for .gitconfig)
 
-```bash
-$HOME/.config/dotter deploy
-```
+   ```bash
+   mv $HOME/.config/.dotter/local.tmpl.toml $HOME/.config/.dotter/local.toml
+   edit $HOME/.config/.dotter/local.toml
+   ```
 
-4. Source zshrc
+4. Run installer (dotter 🦀): NOTE: may take a while, the .Brewfile will install all packages
 
-```bash
-source ~/.zshenv && source ~/.zshrc
-```
+   > Note: If you've already run dotter once, you may need to run `dotter undeploy` to refresh the templates
 
-5. Run additional tasks using [just](https://github.com/casey/just)
+   ```bash
+   $HOME/.config/dotter deploy
+   ```
 
-```bash
-cd $HOME/.config
+5. Source zshrc
 
-# Update Neovim, create symlinks
-just update-neovim
+   ```bash
+   source ~/.zshenv && source ~/.zshrc
+   ```
 
-# If you have bitwarden, you can use the following to
-# setup bw, rbw, and ssh keys
-just bw email=YOUR_EMAIL
+6. Run additional tasks using [just](https://github.com/casey/just)
 
-# If you have copilot setup, you can integrate with Neovim:
-# NOTE: the token will be pulled from bitwarden. To skip that
-# just provide the token using `copilot_token=YOUR_TOKEN`
-just authorize-copilot copilot_user=USERNAME
+   ```bash
+   cd $HOME/.config
 
-# Finally setup your GH ssh keys to access your private repo
-# NOTE: provide `gh_pub` and `gh_key`. They are the names of
-# the bitwarden entries for each.
-just gh-ssh-key gh_pub=BW_GH_PUB gh_key=BW_GH_KEY
-```
+   # Update Neovim, create symlinks
+   just update-neovim
+
+   # If you have bitwarden, you can use the following to
+   # setup bw, rbw, and ssh keys
+   just bw email=YOUR_EMAIL
+
+   # If you have copilot setup, you can integrate with Neovim:
+   # NOTE: the token will be pulled from bitwarden. To skip that
+   # just provide the token using `copilot_token=YOUR_TOKEN`
+   just authorize-copilot copilot_user=USERNAME
+
+   # Finally setup your GH ssh keys to access your private repo
+   # NOTE: provide `gh_pub` and `gh_key`. They are the names of
+   # the bitwarden entries for each.
+   just gh-ssh-key gh_pub=BW_GH_PUB gh_key=BW_GH_KEY
+   ```
