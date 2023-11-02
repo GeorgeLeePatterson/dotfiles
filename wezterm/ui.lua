@@ -7,13 +7,22 @@ local function font(opts)
 	})
 end
 
+local gruvbox_material_override = wezterm.color.get_builtin_schemes()["Gruvbox Material (Gogh)"]
+gruvbox_material_override.ansi[1] = "#804204"
+gruvbox_material_override.brights[1] = "#804204"
+
 return {
 	-- [[ Colorscheme ]]
 
 	-- color_scheme = "Ayu Mirage",
 	-- color_scheme = "nightfox",
 	-- color_scheme = "Gruvbox dark, hard (base16)",
-	color_scheme = 'Gruvbox Material (Gogh)',
+
+	-- Or you can override a scheme
+	color_schemes = {
+		["Gruvbox Material Override"] = gruvbox_material_override,
+	},
+	color_scheme = "Gruvbox Material Override",
 
 	-- [[ Font settings ]]
 
