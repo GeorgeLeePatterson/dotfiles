@@ -1,5 +1,4 @@
 ohmyzsh/ohmyzsh path:plugins/zoxide
-ohmyzsh/ohmyzsh path:plugins/history-substring-search
 ohmyzsh/ohmyzsh path:lib/history.zsh
 ohmyzsh/ohmyzsh path:lib/key-bindings.zsh
 
