@@ -27,6 +27,8 @@ github-copilot/*
 !.gitexcludes
 !.gitignore
 
+lazygit/state.yml
+
 # [[ dotter ]]
 .dotter/cache.toml
 .dotter/cache
