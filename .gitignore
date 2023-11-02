@@ -1,6 +1,9 @@
 # Don't store sensitive data
 github-copilot/*
 
+# Brew
+.Brewfile.lock.json
+
 # antidote install .zsh_plugins.txt to .zsh_plugins.zsh
 .zsh_plugins.zsh
 
