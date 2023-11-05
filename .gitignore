@@ -1,6 +1,8 @@
 # Don't store sensitive data
 github-copilot/*
 
+micro/backups/*
+
 # [[ Brew ]]
 .Brewfile.lock.json
 

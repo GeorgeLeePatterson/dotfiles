@@ -34,27 +34,19 @@ echo "gdu linked"
 ln -s $(which gdu-go) ~/.local/bin/gdu
 {{/if}}
 
-# configure curly lines in wezterm
-if ! test -f ~/.terminfo; then
-  tempfile=$(mktemp) \
-    && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/master/termwiz/data/wezterm.terminfo \
-    && tic -x -o ~/.terminfo $tempfile \
-    && rm $tempfile
-fi
+# Symlink vale ini
+ln -s ~/.config/vale/vale.ini ~/.vale.ini || true
+
 
 # make sure zsh shell
 # chsh -s $(which zsh)
 
 echo "\n\nTo use the new shell updates, be sure to reinitialize zsh:"
 echo "\t==> source ~/.zshenv"
-echo "\t\t\t\tor"
+echo "\tor"
 echo "\t==> exec /bin/zsh"
 
 echo "\n\n**************************"
 echo "To setup Neovim, Bitwarden, or Copilot, run the 'justfile' by executing 'just' in the '~/.config' directory"
 echo "**************************\n\n"
-
-# Run dotter in the background
-# nohup ~/.config/dotter watch &
-
 
