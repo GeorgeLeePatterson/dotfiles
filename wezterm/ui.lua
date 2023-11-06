@@ -1,5 +1,4 @@
 local wezterm = require("wezterm")
-
 local function font(opts)
 	return wezterm.font_with_fallback({
 		opts,
@@ -67,6 +66,7 @@ return {
 	--         "#010608",
 	--     },
 	-- },
+	window_decorations = "RESIZE",
 	window_frame = {
 		font = wezterm.font({ family = "VictorMono Nerd Font", weight = "Regular" }),
 	},
