@@ -83,7 +83,7 @@ fi
 source "$HOME/.cargo/env"
 
 # poetry, gdu, etc
-export PATH="$XDG_CONFIG_HOME/.local/bin:$PATH"
+export PATH="$XDG_CONFIG_HOME/.local/bin:$HOME/.local/bin:$PATH"
 
 # wezterm
 export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
@@ -104,7 +104,9 @@ eval "$(pyenv init --path)"
 
 # gdu
 if which gdu-go > /dev/null 2>&1; then
-  alias gdu='gdu-go'
+  if ! which gdu > /dev/null 2>&1; then
+    ln -s $(which gdu-go) ~/.local/bin/gdu || true
+  fi
 fi
 
 # bat

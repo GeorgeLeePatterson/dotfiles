@@ -28,15 +28,9 @@ fi
 mkdir -p ~/.local/bin
 
 # configure gdu
-{{#if (is_executable "gdu")}}
-echo "gdu linked"
-{{else}}
-ln -s $(which gdu-go) ~/.local/bin/gdu
+{{#if (is_executable "gdu-go")}}
+ln -s $(which gdu-go) ~/.local/bin/gdu || true
 {{/if}}
-
-# Symlink vale ini
-ln -s ~/.config/vale/vale.ini ~/.vale.ini || true
-
 
 # make sure zsh shell
 # chsh -s $(which zsh)
