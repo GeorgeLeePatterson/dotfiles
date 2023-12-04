@@ -4,6 +4,8 @@ github-copilot/*
 micro/backups/*
 micro/buffers/*
 
+*.log
+
 # [[ Brew ]]
 .Brewfile.lock.json
 
