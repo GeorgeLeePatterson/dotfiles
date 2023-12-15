@@ -70,6 +70,8 @@ return {
 	window_frame = {
 		font = wezterm.font({ family = "VictorMono Nerd Font", weight = "Regular" }),
 	},
+	enable_scroll_bar = true,
+  	-- scrollbar_thumb = '#222222',
 
 	-- [[ Ligatures]]
 
