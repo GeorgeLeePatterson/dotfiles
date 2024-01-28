@@ -1,4 +1,4 @@
-# My Dots 🍬 🐜
+# Dots 🍬 🐜
 
 The configurations I use to setup my environments for development productivity.
 
@@ -59,7 +59,8 @@ Wezterm integration
 - pyenv: Manage python environments
 - poetry: Python project management
 - jq: Excellent command line json parser
-- And many more
+- All NerdFonts
+- And others
 
 ## Install
 
