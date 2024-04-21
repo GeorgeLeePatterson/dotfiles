@@ -1,0 +1,53 @@
+[[language]]
+name = "rust"
+language_servers = ["rust_analyzer", "copilot"]
+auto-format = true
+roots = ["Cargo.toml", "Cargo.lock"]
+
+config.check.command = "clippy"
+config.check.features = "all"
+config.check.extraArgs = ["--no-deps"]
+config.completion.fullFunctionSignatures.enable = true
+config.imports.granularity.group = "module"
+
+[language.auto-pairs]
+'(' = ')'
+'[' = ']'
+'{' = '}'
+'"' = '"'
+"'" = "'"
+'`' = '`'
+'<' = '>'
+
+[language-server.copilot]
+command = "node /Users/georgepatterson/.local/share/nvim/lazy/copilot.lua/copilot/index.js"
+args = ["--stdio"]
+
+[[language]]
+name = "javascript"
+formatter = { command = 'prettier', args = ["--parser", "typescript"] }
+
+[[language]]
+name = "typescript"
+formatter = { command = 'prettier', args = ["--parser", "typescript"] }
+
+[[language]]
+name = "json"
+auto-format = false
+
+[[language]]
+name = "toml"
+auto-format = true
+
+[[language]]
+name = "bash"
+
+[[language]]
+name = "yaml"
+indent = { tab-width = 0, unit = "  " }
+formatter = { command = "prettier", args = ["--parser", "yaml"] }
+
+[[language]]
+name = "markdown"
+# https://github.com/executablebooks/mdformat
+formatter = { command = "mdformat", args = ["-"] }

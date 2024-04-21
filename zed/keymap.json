@@ -1,0 +1,113 @@
+// NOTES:
+//  VimControl = !insert
+//  VimWaiting = replace
+//  VimObject = object such as word, sentence, etc (usually triggered by a motion)
+//  VimMotion = motion such as h, j, k, l, etc
+//  VimOperator = operator such as d, y, c, etc
+//
+[
+  {
+    "context": "Editor && VimControl && !VimWaiting && !menu",
+    "bindings": {
+      "g shift-r": "editor::FindAllReferences",
+      "shift-k": "editor::Hover",
+      "g a": "editor::ToggleCodeActions",
+      "space c": [
+        "pane::CloseActiveItem",
+        {
+          "saveIntent": "skip"
+        }
+      ]
+    }
+  },
+  {
+    "context": "Editor && VimControl && !VimWaiting && vim_operator == none && !menu",
+    "bindings": {
+      "] b": "pane::ActivateNextItem",
+      "[ b": "pane::ActivatePrevItem",
+      // "Telescope" things.
+      "space space": "file_finder::Toggle"
+    }
+  },
+  {
+    "context": "MarkdownPreview",
+    "bindings": {
+      "] b": "pane::ActivateNextItem",
+      "[ b": "pane::ActivatePrevItem",
+      "space c": [
+        "pane::CloseActiveItem",
+        {
+          "saveIntent": "skip"
+        }
+      ]
+    }
+  },
+  {
+    "context": "Editor && vim_mode == visual && !VimWaiting && !VimObject && !menu",
+    "bindings": {
+      // Indenting/Unindenting.
+      "tab": ["workspace::SendKeystrokes", ">"],
+      "shift-tab": ["workspace::SendKeystrokes", "<"]
+    }
+  },
+  {
+    "context": "Editor && vim_mode != insert && !VimWaiting && !menu",
+    "bindings": {
+      "space o": "project_panel::ToggleFocus"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      // "k": "menu::SelectPrev",
+      // "j": "menu::SelectNext",
+      "h": "project_panel::CollapseSelectedEntry",
+      "l": "project_panel::ExpandSelectedEntry",
+      "o": "project_panel::Open",
+      "space o": "project_panel::ToggleFocus",
+      // Unmap the space bar
+      "space": null
+    }
+  },
+  {
+    "context": "Dock",
+    "bindings": {
+      "ctrl-w h": ["workspace::ActivatePaneInDirection", "Left"],
+      "ctrl-w l": ["workspace::ActivatePaneInDirection", "Right"],
+      "ctrl-w k": ["workspace::ActivatePaneInDirection", "Up"],
+      "ctrl-w j": ["workspace::ActivatePaneInDirection", "Down"]
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      "escape": "workspace::ToggleLeftDock"
+    }
+  }
+  // {
+  //   "context": "Editor && (vim_mode == normal || vim_mode == visual) && !VimWaiting && !menu",
+  //   "bindings": {
+  //     // put key-bindings here if you want them to work in normal & visual mode
+  //   }
+  // },
+  // {
+  //   "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
+  //   "bindings": {
+  //     // put key-bindings here if you want them to work only in normal mode
+  //   }
+  // },
+  // {
+  //   "context": "Editor && vim_mode == visual && !VimWaiting && !menu",
+  //   "bindings": {
+  //     // visual, visual line & visual block modes
+  //   }
+  // },
+  // {
+  //   "context": "Editor && vim_mode == insert && !menu",
+  //   "bindings": {
+  //     // put key-bindings here if you want them to work in insert mode
+  //     // e.g. ]
+  //     // "j j": "vim::NormalBefore" // remap jj in insert mode to escape.
+  //   }
+  // },
+]

@@ -114,4 +114,26 @@ if which bat > /dev/null 2>&1; then
   alias cat="bat"
 fi
 
+# ChatGPT
+openai ()
+{
+    if [[ -z "${OPENAI_API_KEY}" ]]; then
+        if which rbw > /dev/null 2>&1; then
+            export OPENAI_API_KEY=$(rbw get OPENAI_API_KEY)
+        fi
+    fi
+}
+
+openai
+
+# Fluvio
+fluvio_env()
+{
+  export PATH="${HOME}/.fvm/bin:${HOME}/.fluvio/bin:${PATH}"
+}
+
+if [[ -d "${HOME}/.fvm" ]]; then
+  fluvio_env
+fi
+
 unsetopt all_export

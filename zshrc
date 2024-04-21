@@ -1,9 +1,9 @@
 export ZSH_RC_SOURCED=1 # Helps to keep track when this occurs
 
 # ########################
-# 
+#
 # TERM
-# 
+#
 # ########################
 
 # configure TERM for wezterm
@@ -16,9 +16,9 @@ fi
 export TERM="wezterm"
 
 # ########################
-# 
+#
 # ZSH
-# 
+#
 # ########################
 
 # +------------+
@@ -65,7 +65,7 @@ antidote load ${zsh_plugins:r}.txt
 
 # zsh plugins configuration
 export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/opt/homebrew/share/zsh-syntax-highlighting/highlighters
-export ZSH_AUTOSUGGEST_STRATEGY=(history completion) 
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
@@ -139,18 +139,18 @@ hashi_comp() {
 }
 
 # ########################
-# 
+#
 # Path
-# 
+#
 # ########################
 
 # make sure brew is in path !
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # ########################
-# 
+#
 # Aliases
-# 
+#
 # ########################
 
 # eza
@@ -212,9 +212,9 @@ alias gj="git-jump"                                                             
 alias dif="git diff --no-index"                                                                   # Diff two files even if not in git repo! Can add -w (don't diff whitespaces)
 
 # ########################
-# 
+#
 # Application Setup & Fn Overrides
-# 
+#
 # ########################
 
 # atuin
@@ -278,7 +278,7 @@ upgrade_wezterm()
   brew upgrade --cask wezterm-nightly --no-quarantine --greedy-latest
 }
 
-# install nerdfonts helper 
+# install nerdfonts helper
 install_fonts()
 {
   brew tap homebrew/cask-fonts
@@ -295,3 +295,9 @@ fi
 
 # Keep track of dotter initialized
 export DOTTER_DEPLOYED=1
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '~/.local/lib/google-cloud-sdk/path.zsh.inc' ]; then . '~/.local/lib/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '~/.local/lib/google-cloud-sdk/completion.zsh.inc' ]; then . '~/.local/lib/google-cloud-sdk/completion.zsh.inc'; fi

@@ -14,26 +14,14 @@ I prefer Rust tools when possible, so most of the tools configured are written i
 
 Neovim (AstroNvim-based) dot files are [here](https://github.com/GeorgeLeePatterson/astrovim)
 
-> NOTE: Will be moving to a fully custom setup at some point, will change submodule configuration.
-
-## Screenshots
-
-### Neovim Screens
-
-Dashboard
-![Dashboard](https://github.com/GeorgeLeePatterson/astrovim/blob/main/assets/dashboard.png)
-
-Editor
-![Editor](https://github.com/GeorgeLeePatterson/astrovim/blob/main/assets/editor.png)
-
-Wezterm integration
-![Wezterm integration](https://github.com/GeorgeLeePatterson/astrovim/blob/main/assets/wezterm.png)
+> NOTE: No longer using Neovim 🫠. Have switched over to zed. To see the configuration I was using, visit the link above.
 
 ### Shell
 
 - Terminal emulator: [Wezterm](https://wezfurlong.org/wezterm) (🦀)
 - Prompt: [Starship](https://starship.rs/) (🦀)
 - Shell: ZSH, [Antidote plugin manager](https://github.com/mattmc3/antidote)
+- IDE: [Zed](https://zed.dev/releases/preview) (🦀)
 
 ### Tools
 

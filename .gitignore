@@ -1,5 +1,9 @@
 # Don't store sensitive data
 github-copilot/*
+/gcloud
+zed/*
+!zed/settings.json
+!zed/keymap.json
 
 micro/backups/*
 micro/buffers/*
@@ -38,7 +42,7 @@ lazygit/state.yml
 .dotter/cache.toml
 .dotter/cache
 # local configuration specific to machine
-.dotter/local.toml 
+.dotter/local.toml
 
 # [[ Zsh ]]
 # antidote install .zsh_plugins.txt to .zsh_plugins.zsh
@@ -53,4 +57,4 @@ lazygit/state.yml
 # [[ Wezterm ]]
 
 # this is configured per system
-wezterm/ssh-domains.lua 
+wezterm/ssh-domains.lua

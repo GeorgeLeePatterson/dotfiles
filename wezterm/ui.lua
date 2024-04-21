@@ -25,7 +25,9 @@ return {
 
 	-- [[ Font settings ]]
 
-	font = font("JetBrainsMono Nerd Font"),
+	font = font("FiraCode Nerd Font"),
+	-- font = font("Mononoki Nerd Font"),
+	-- font = font("JetBrainsMono Nerd Font"),
 	-- font = font("VictorMono Nerd Font"),
 	font_rules = {
 		{
@@ -71,7 +73,7 @@ return {
 		font = wezterm.font({ family = "VictorMono Nerd Font", weight = "Regular" }),
 	},
 	enable_scroll_bar = true,
-  	-- scrollbar_thumb = '#222222',
+	-- scrollbar_thumb = '#222222',
 
 	-- [[ Ligatures]]
 
