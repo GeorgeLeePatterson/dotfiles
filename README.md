@@ -1,4 +1,4 @@
-# My Dots 🍬 🐜
+# Dots 🍬 🐜
 
 The configurations I use to setup my environments for development productivity.
 
@@ -47,7 +47,8 @@ Neovim (AstroNvim-based) dot files are [here](https://github.com/GeorgeLeePatter
 - pyenv: Manage python environments
 - poetry: Python project management
 - jq: Excellent command line json parser
-- And many more
+- All NerdFonts
+- And others
 
 ## Install
 
