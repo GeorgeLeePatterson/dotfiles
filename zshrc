@@ -205,7 +205,8 @@ alias gr='git remote'
 alias grs='git remote show'
 alias glol='git log --graph --abbrev-commit --oneline --decorate'
 alias gclean="git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d" # Delete local branch merged with master
-alias gblog="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:red)%(refname:short)%(color:reset) - %(color:yellow)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:blue)%(committerdate:relative)%(color:reset))'"                                                             # git log for each branches
+# git log for each branches
+alias gblog="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:red)%(refname:short)%(color:reset) - %(color:yellow)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:blue)%(committerdate:relative)%(color:reset))'"
 alias gsub="git submodule update --remote"                                                        # pull submodules
 alias gj="git-jump"                                                                               # Open in vim quickfix list files of interest (git diff, merged...)
 
@@ -296,8 +297,6 @@ fi
 # Keep track of dotter initialized
 export DOTTER_DEPLOYED=1
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '~/.local/lib/google-cloud-sdk/path.zsh.inc' ]; then . '~/.local/lib/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '~/.local/lib/google-cloud-sdk/completion.zsh.inc' ]; then . '~/.local/lib/google-cloud-sdk/completion.zsh.inc'; fi
+if [[ -f "$HOME/.zsh-extra" ]]; then
+    source "$HOME/.zsh-extra"
+fi

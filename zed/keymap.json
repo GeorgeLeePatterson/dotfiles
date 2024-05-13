@@ -43,11 +43,17 @@
     }
   },
   {
-    "context": "Editor && vim_mode == visual && !VimWaiting && !VimObject && !menu",
+    "context": "Editor && vim_mode == normal && vim_operator == none && !VimWaiting",
+    "bindings": {
+      "~": null
+    }
+  },
+  {
+    "context": "Editor && vim_mode == visual && !VimObject && !VimWaiting && !menu",
     "bindings": {
       // Indenting/Unindenting.
-      "tab": ["workspace::SendKeystrokes", ">"],
-      "shift-tab": ["workspace::SendKeystrokes", "<"]
+      "tab": "vim::Indent",
+      "shift-tab": "vim::Outdent"
     }
   },
   {
