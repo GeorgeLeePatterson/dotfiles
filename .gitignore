@@ -4,6 +4,7 @@ github-copilot/*
 /gcloud
 packer/checkpoint_*
 zed/*
+uv/*
 !zed/settings.json
 !zed/keymap.json
 
