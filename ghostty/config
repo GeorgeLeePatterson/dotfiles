@@ -1,0 +1,3 @@
+font-family = JetBrains Mono
+scrollback-limit = 1000000000
+theme = catppuccin-frappe

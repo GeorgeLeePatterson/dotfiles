@@ -138,7 +138,6 @@ symbol = " "
 symbol = "🪺 "
 
 [python]
-pyenv_version_name = true
 
 [rlang]
 symbol = "ﳒ "

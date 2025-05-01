@@ -8,42 +8,262 @@
 // from the command palette or from `Zed` application menu.
 {
   // -- Commonly changed
-  "theme": "Base16 emil",
+  "icon_theme": "VSCode Great Icons Theme",
+  "assistant": {
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "claude-3-5-sonnet"
+    },
+    "version": "2"
+  },
+  "theme": {
+    "mode": "system",
+    "light": "RustRover Dark",
+    "dark": "Hex Ayu Mirage"
+  },
   "base_keymap": "VSCode",
   "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_features": {
+    // Disable ligatures:
+    "calt": true
+  },
   "ui_font_family": "Inconsolata Nerd Font",
   "ui_font_size": 16,
-  "buffer_font_size": 16,
+  "ui_font_features": {
+    // Disable ligatures:
+    "calt": true
+  },
+  "features": {
+    "edit_prediction_provider": "zed"
+  },
+  "buffer_font_size": 13.0,
   "inlay_hints": {
-    "enabled": true,
+    "enabled": false,
     "show_type_hints": true,
     "show_parameter_hints": true,
     "show_other_hints": true
   },
   "preferred_line_length": 100,
+  "show_wrap_guides": true,
+  "wrap_guides": [
+    100
+  ],
+  "unnecessary_code_fade": 0.5,
+  "expand_excerpt_lines": 10,
   "vim_mode": true,
   "active_pane_magnification": 1.1,
   // -- Less commonly changed
   // LSP Specific settings.
   "lsp": {
     // Specify the LSP name as a key here.
-    // "rust-analyzer": {
-    //     // These initialization options are merged into Zed's defaults
-    //     "initialization_options": {
-    //         "check": {
-    //             "command": "clippy" // rust-analyzer.check.command (default: "check")
-    //         }
-    //     }
-    // }
+    "rust-analyzer": {
+      // These initialization options are merged into Zed's defaults
+      "initialization_options": {
+        "cargo": {
+          // "features": "all"
+          "runBuildScripts": true,
+          "cfgs": [
+            "debug_assertions"
+          ]
+        },
+        "rustfmt": {
+          "extraArgs": [
+            "+nightly"
+          ]
+        },
+        "check": {
+          "command": "clippy", // rust-analyzer.check.command (default: "check")
+          "features": "all"
+        },
+        "inlayHints": {
+          "maxLength": null,
+          "bindingModeHints": {
+            "enable": true
+          },
+          "closureCaptureHints": {
+            "enable": true
+          },
+          "discriminantHints": {
+            "enable": true
+          },
+          "expressionAdjustmentHints": {
+            "enable": true
+          },
+          "genericParameterHints": {
+            "type": {
+              "enable": true
+            }
+          },
+          "lifetimeElisionHints": {
+            "useParameterNames": true,
+            "enable": "skip_trivial"
+          },
+          "closureReturnTypeHints": {
+            "enable": "always"
+          }
+        },
+        "procMacro": {
+          "enable": true,
+          "attributes": {
+            "enable": true
+          }
+        },
+        "completion": {
+          "fullFunctionSignatures": {
+            "enable": true
+          },
+          "snippets": {
+            "custom": {
+              "Arc::new": {
+                "postfix": "arc",
+                "body": [
+                  "Arc::new(${receiver})"
+                ],
+                "requires": "std::sync::Arc",
+                "scope": "expr"
+              },
+              "Some": {
+                "postfix": "some",
+                "body": [
+                  "Some(${receiver})"
+                ],
+                "scope": "expr"
+              },
+              "Ok": {
+                "postfix": "ok",
+                "body": [
+                  "Ok(${receiver})"
+                ],
+                "scope": "expr"
+              },
+              "Rc::new": {
+                "postfix": "rc",
+                "body": [
+                  "Rc::new(${receiver})"
+                ],
+                "requires": "std::rc::Rc",
+                "scope": "expr"
+              },
+              "Box::pin": {
+                "postfix": "boxpin",
+                "body": [
+                  "Box::pin(${receiver})"
+                ],
+                "requires": "std::boxed::Box",
+                "scope": "expr"
+              },
+              "vec!": {
+                "postfix": "vec",
+                "body": [
+                  "vec![${receiver}]"
+                ],
+                "description": "vec![]",
+                "scope": "expr"
+              }
+            }
+          }
+        },
+        "diagnostics": {
+          "experimental": {
+            "enable": false
+          }
+        },
+        "hover": {
+          "actions": {
+            "references": {
+              "enable": true
+            }
+          },
+          "memoryLayout": {
+            "niches": true
+          }
+        },
+        "lens": {
+          "references": {
+            "adt": {
+              "enable": true
+            },
+            "enumVariant": {
+              "enable": true
+            },
+            "method": {
+              "enable": true
+            },
+            "trait": {
+              "enable": true
+            }
+          }
+        },
+        "typing": {
+          "autoClosingAngleBrackets": {
+            "enable": true
+          }
+        },
+        "semanticHighlighting": {
+          "operator": {
+            "enable": true,
+            "specialization": {
+              "enable": true
+            }
+          },
+          "punctuation": {
+            "enable": true,
+            "separate": {
+              "macro": {
+                "bang": true
+              }
+            },
+            "specialization": {
+              "enable": true
+            }
+          }
+        }
+      }
+    },
+    "ruff": {
+      "initialization_options": {
+        "settings": {
+          // Ruff server settings goes here
+          "lineLength": 100
+        }
+      }
+    }
   },
-  "language_overrides": {
-    "Markdown": {
-      "soft_wrap": "editor_width"
+  "languages": {
+    "Python": {
+      "show_edit_predictions": true,
+      "language_servers": [
+        "pyright",
+        "ruff"
+      ],
+      "format_on_save": "on",
+      "formatter": [
+        {
+          "code_actions": {
+            // Organize imports
+            "source.organizeImports.ruff": true,
+            // Fix all auto-fixable lint violations
+            "source.fixAll.ruff": true
+          }
+        },
+        {
+          "language_server": {
+            "name": "ruff"
+          }
+        }
+      ]
+    },
+    "HCL": {
+      "tab_size": 2,
+      "hard_tabs": true
     },
     "JSON": {
       "soft_wrap": "editor_width"
     },
     "LOG": {
+      "soft_wrap": "editor_width"
+    },
+    "Markdown": {
       "soft_wrap": "editor_width"
     },
     "Plain Text": {
@@ -53,6 +273,17 @@
       "format_on_save": "off"
     }
   },
+  "file_types": {
+    "HCL": [
+      "hcl",
+      "pkr.hcl"
+    ],
+    "YAML": [
+      "yml",
+      "yaml"
+    ]
+  },
+  "auto_signature_help": true,
   // use relative line numbers
   "relative_line_numbers": true,
   // Vim settings
@@ -60,6 +291,30 @@
     "use_system_clipboard": "always",
     "use_multiline_find": false,
     "use_smartcase_find": false
+  },
+  "project_panel": {
+    // Whether to show the project panel button in the status bar
+    "button": true,
+    // Default width of the project panel.
+    "default_width": 200,
+    // Where to dock the project panel. Can be 'left' or 'right'.
+    "dock": "left",
+    // Whether to show file icons in the project panel.
+    "file_icons": true,
+    // Whether to show folder icons or chevrons for directories in the project panel.
+    "folder_icons": true,
+    // Whether to show the git status in the project panel.
+    "git_status": true,
+    // Amount of indentation for nested items.
+    "indent_size": 16,
+    // Whether to reveal it in the project panel automatically,
+    // when a corresponding project entry becomes active.
+    // Gitignored entries are never auto revealed.
+    "auto_reveal_entries": true,
+    /// Whether to fold directories automatically
+    /// when a directory has only one directory inside.
+    "auto_fold_dirs": true,
+    "show_diagnostics": "all"
   },
   "scrollbar": {
     // When to show the scrollbar in the editor.
@@ -84,7 +339,7 @@
     // Whether to show selected symbol occurrences in the scrollbar.
     "selected_symbol": true,
     // Whether to show diagnostic indicators in the scrollbar.
-    "diagnostics": true
+    "diagnostics": "all"
   },
   // When to populate a new search's query based on the text under the cursor.
   // This setting can take the following three values:
@@ -110,10 +365,12 @@
   "autosave": "off",
   // Settings related to the editor's tabs
   "tabs": {
+    "file_icons": true,
     // Show git status colors in the editor tabs.
     "git_status": true,
     // Position of the close button on the editor tabs.
-    "close_position": "right"
+    "close_position": "right",
+    "show_diagnostics": "all"
   },
   // How to perform a buffer format. This setting can take 4 values:
   //
@@ -144,9 +401,6 @@
   //   "TOML": ["Embargo.lock"]
   // }
   //
-  "file_types": {
-    "YAML": ["yml"]
-  },
   // How to soft-wrap long lines of text. This setting can take
   // three values:
   //
@@ -167,10 +421,31 @@
   //  2. Make the option keys behave as a 'meta' key, e.g. for emacs
   //         "option_to_meta": true,
   "option_as_meta": true,
-  "copilot": {
+  "edit_predictions": {
     // The set of glob patterns for which copilot should be disabled
     // in any matching file.
-    "disabled_globs": [".env"]
+    "disabled_globs": [
+      ".env"
+    ]
+  },
+  "indent_guides": {
+    /// Whether to show indent guides in the editor.
+    "enabled": true,
+    /// The width of the indent guides in pixels, between 1 and 10.
+    "line_width": 1,
+    /// Determines how indent guides are colored.
+    /// This setting can take the following three values:
+    ///
+    /// 1. "disabled"
+    /// 2. "fixed"
+    /// 3. "indent_aware"
+    "coloring": "indent_aware",
+    /// Determines how indent guide backgrounds are colored.
+    /// This setting can take the following two values:
+    ///
+    /// 1. "disabled"
+    /// 2. "indent_aware"
+    "background_coloring": "indent_aware"
   },
   // What to do when multibuffer is double clicked in some of its excerpts
   // (parts of singleton buffers).
@@ -182,40 +457,40 @@
   // For the case of "open", regular selection behavior can be achieved by holding `alt` when double clicking.
   "double_click_in_multibuffer": "open",
   // Different settings for specific languages.
-  "languages": {
-    "C++": {
-      "format_on_save": "off"
-    },
-    "C": {
-      "format_on_save": "off"
-    },
-    "Elixir": {
-      "language_servers": ["elixir-ls", "!next-ls", "!lexical", "..."]
-    },
-    "Gleam": {
-      "tab_size": 2
-    },
-    "Go": {
-      "code_actions_on_format": {
-        "source.organizeImports": true
-      }
-    },
-    "HEEX": {
-      "language_servers": ["elixir-ls", "!next-ls", "!lexical", "..."]
-    },
-    "Make": {
-      "hard_tabs": true
-    },
-    "Markdown": {
-      "format_on_save": "off"
-    },
-    "Prisma": {
-      "tab_size": 2
-    },
-    "Ruby": {
-      "language_servers": ["solargraph", "..."]
-    }
-  },
+  // "languages": {
+  //   "c++": {
+  //     "format_on_save": "off"
+  //   },
+  //   "c": {
+  //     "format_on_save": "off"
+  //   },
+  //   "elixir": {
+  //     "language_servers": ["elixir-ls", "!next-ls", "!lexical", "..."]
+  //   },
+  //   "gleam": {
+  //     "tab_size": 2
+  //   },
+  //   "go": {
+  //     "code_actions_on_format": {
+  //       "source.organizeimports": true
+  //     }
+  //   },
+  //   "heex": {
+  //     "language_servers": ["elixir-ls", "!next-ls", "!lexical", "..."]
+  //   },
+  //   "make": {
+  //     "hard_tabs": true
+  //   },
+  //   "markdown": {
+  //     "format_on_save": "off"
+  //   },
+  //   "prisma": {
+  //     "tab_size": 2
+  //   },
+  //   "ruby": {
+  //     "language_servers": ["solargraph", "..."]
+  //   }
+  // },
   "telemetry": {
     "diagnostics": false,
     "metrics": false

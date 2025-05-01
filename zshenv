@@ -64,20 +64,20 @@ export VALE_CONFIG_PATH=$XDG_CONFIG_HOME/.vale.ini
 
 typeset -U path
 
-# pyenv - lazy load
-PYENV_ROOT="${HOME}/.pyenv"
-if [[ -d "${PYENV_ROOT}" ]]; then
-  pyenv () {
-    if ! (($path[(Ie)${PYENV_ROOT}/bin])); then
-      path[1,0]="${PYENV_ROOT}/bin"
-    fi
-    eval "$(command pyenv init -)"
-    pyenv "$@"
-    unfunction pyenv
-  }
-else
-  unset PYENV_ROOT
-fi
+# # pyenv - lazy load
+# PYENV_ROOT="${HOME}/.pyenv"
+# if [[ -d "${PYENV_ROOT}" ]]; then
+#   pyenv () {
+#     if ! (($path[(Ie)${PYENV_ROOT}/bin])); then
+#       path[1,0]="${PYENV_ROOT}/bin"
+#     fi
+#     eval "$(command pyenv init -)"
+#     pyenv "$@"
+#     unfunction pyenv
+#   }
+# else
+#   unset PYENV_ROOT
+# fi
 
 # cargo
 source "$HOME/.cargo/env"
@@ -98,7 +98,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(fnm env)"
 
 # pyenv
-eval "$(pyenv init --path)"
+# eval "$(pyenv init --path)"
 
 # Setting some aliases here for neovim (no idea why they don't get sourced)
 
@@ -137,3 +137,9 @@ if [[ -d "${HOME}/.fvm" ]]; then
 fi
 
 unsetopt all_export
+
+# Go
+export GOROOT="/opt/homebrew/opt/go/libexec"
+export GOPATH=$HOME/go
+export PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
+. "$HOME/.cargo/env"

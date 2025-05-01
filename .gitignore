@@ -1,6 +1,8 @@
 # Don't store sensitive data
+cody-ai/*
 github-copilot/*
 /gcloud
+packer/checkpoint_*
 zed/*
 !zed/settings.json
 !zed/keymap.json
