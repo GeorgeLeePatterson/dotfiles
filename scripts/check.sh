@@ -36,7 +36,11 @@ if grep -Eiq 'not found|aborted|can.t change|parse error|permission denied' "$fi
 # A checkout in .config must not turn any source into a self-referential symlink.
 export HOME="$fixture/in-place"
 mkdir -p "$HOME/.config"
-cp -R "$repo/." "$HOME/.config/"
+# Copy only tracked source files, never the user's app state beside this checkout.
+while IFS= read -r -d '' file; do
+  mkdir -p "$HOME/.config/$(dirname "$file")"
+  cp -p "$repo/$file" "$HOME/.config/$file"
+done < <(git -C "$repo" ls-files -z)
 /bin/bash "$HOME/.config/setup.sh" --config-only > "$fixture/in-place.log"
 [[ -f "$HOME/.config/starship.toml" && ! -L "$HOME/.config/starship.toml" ]]
 [[ -f "$HOME/.config/zsh/zshrc" && -L "$HOME/.zshrc" ]]
