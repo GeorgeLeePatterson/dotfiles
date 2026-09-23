@@ -1,4 +1,26 @@
 # Explicit macOS Keychain helpers. No secrets are read until you call one.
+keycheck() {
+  command dotfiles-credentials status
+}
+
+keyload() {
+  emulate -L zsh
+  local names name value
+  local -A pending
+  names=$(command dotfiles-credentials names "${1:-}") || return $?
+  for name in ${(f)names}; do
+    if ! value=$(security find-generic-password -a "$USER" -s "$name" -w 2>/dev/null); then
+      print -u2 "keyload: '$name' is missing or inaccessible; no variables were changed"
+      return 1
+    fi
+    pending[$name]=$value
+  done
+  # The old Docker password export was an alias of this same token.
+  [[ $1 == docker ]] && pending[DOCKER_HUB_PASSWORD]=${pending[DOCKER_TOKEN]}
+  for name in ${(k)pending}; do export "$name=${pending[$name]}"; done
+  print "Loaded $1 into this shell"
+}
+
 keyset() {
   emulate -L zsh
   local service="$1" val="${2:-}"

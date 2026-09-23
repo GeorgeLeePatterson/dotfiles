@@ -113,6 +113,7 @@ link_file zsh/zshrc "$HOME/.zshrc"
 # These two files are sourced relative to ~/.config, even when the repo lives elsewhere.
 link_file zsh/aliases.zsh "$HOME/.config/zsh/aliases.zsh"
 link_file zsh/keychain.zsh "$HOME/.config/zsh/keychain.zsh"
+link_file scripts/credentials.py "$HOME/.local/bin/dotfiles-credentials"
 for relative in starship.toml ghostty/config bat/config fd/ignore atuin/config.toml micro/settings.json micro/bindings.json git/ignore; do
   link_file "$relative" "$HOME/.config/$relative"
 done

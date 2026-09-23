@@ -2,6 +2,7 @@
 set -euo pipefail
 repo=$(cd "$(dirname "$0")/.." && pwd -P)
 /bin/bash -n "$repo/setup.sh"
+python3 "$repo/scripts/check_credentials.py"
 for file in "$repo"/zsh/*; do /bin/zsh -n "$file"; done
 fixture=$(mktemp -d -t dotfiles-check)
 trap 'rm -rf "$fixture"' EXIT

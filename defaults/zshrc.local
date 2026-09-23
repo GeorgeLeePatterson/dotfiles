@@ -1,5 +1,6 @@
 # Copied once to ~/.zshrc.local (mode 600), never linked or overwritten by setup.
 # Portable non-secret settings belong in the tracked Zsh files.
+# Inventory: keycheck. Load a group when needed: keyload huggingface|npm|docker|github-pat
 # For a credential: run `keyset SERVICE_NAME`, then paste into its hidden prompt.
 # Load it only where needed with `keyenv VARIABLE_NAME SERVICE_NAME`.
 # Examples (enable only after adding the corresponding Keychain item):

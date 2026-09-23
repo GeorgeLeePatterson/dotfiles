@@ -106,8 +106,9 @@ macOS Keychain helpers. The shared shell never automatically reads the Keychain.
   lazygit and glow. These are optional, not part of the small default install.
   Add the last three to `Brewfile` if desired; install Rust/Bun only when needed.
 - **Local secrets:** recreate needed Keychain entries and private overrides on the
-  new machine. Do not copy old exported tokens wholesale. An expired `GH_TOKEN`
-  or `GITHUB_TOKEN` can override a valid `gh auth login`.
+  new machine, or use the selective SSH transfer below. Do not copy old exported
+  tokens wholesale. An expired `GH_TOKEN` or `GITHUB_TOKEN` can override a valid
+  `gh auth login`.
 
 ### Private environment settings and credentials
 
@@ -115,9 +116,61 @@ Ordinary preferences belong in the tracked shell (`AWS_DEFAULT_REGION=us-east-1`
 `RUST_BACKTRACE=full`, paths and editor defaults). Machine-only overrides belong in
 `~/.zshenv.local` or `~/.zshrc.local`. Setup never publishes these files.
 
-Keep reusable credentials in your password manager, such as Bitwarden, and use
-macOS Keychain for local CLI access. On each new Mac, open the chosen credential
-in your password manager and enter it into the hidden prompt:
+The shared `dotfiles-credentials` command inventories custom shell credentials by
+name and transfers selected groups. Values stay in macOS Keychain. It uses Python
+3.9+ supplied by Apple's command-line tools, with no third-party dependencies.
+
+```sh
+keycheck              # names and presence only; never values
+keyload huggingface   # export this group's values into the current shell
+keyload npm
+keyload docker
+```
+
+| Group | Keychain items | Environment when loaded |
+| --- | --- | --- |
+| `huggingface` | `HF_TOKEN` | `HF_TOKEN` |
+| `npm` | `NPM_TOKEN` | `NPM_TOKEN` |
+| `docker` | `DOCKER_HUB_USERNAME`, `DOCKER_TOKEN` | Both, plus `DOCKER_HUB_PASSWORD` as an alias of `DOCKER_TOKEN` |
+| `github-pat` | `GITHUB_PERSONAL_ACCESS_TOKEN` | Same name; only if a separate integration needs a PAT |
+
+Old `GH_TOKEN`, `AWS_ACCESS_KEY_ID`, `AWS_SESSION_TOKEN`, and a conflicting
+`NPM_TOKEN_LEGACY_BASH` are listed separately for review. Normal group loading and
+transfer exclude them. Presence means stored, not that a provider accepted it.
+Use GitHub CLI's own login for Git/gh and AWS SSO for AWS work.
+
+To consolidate the old personal shell layout once (safe to repeat):
+
+```sh
+dotfiles-credentials migrate
+```
+
+It reads literal credential assignments and recognized aliases in `.zshrc.local`
+and `.bash_profile`, verifies Keychain storage before removing plaintext, and
+removes automatic credential exports. Existing different values cause it to stop;
+the old Bash npm value is retained separately if it differs from the active Keychain
+value. Private rollback copies live in `~/.local/state/dotfiles/credential-backups/`.
+Those copies contain the old secrets: retain privately or delete after validating
+your services. Open a fresh terminal after migration; existing processes still
+have their previously exported values.
+
+**Transfer to another configured Mac:** update/run setup on both machines first.
+From the source Mac, select the groups you actually want to send:
+
+```sh
+dotfiles-credentials transfer farself@192.168.1.98 huggingface npm docker
+```
+
+This uses already-trusted SSH and sends values directly to the receiving Mac's
+Keychain over encrypted SSH stdin. There is no export file. The receiver uses its
+own macOS account, so different account names are supported. Matching entries are
+retained; different existing entries stop the import. A failed partial transfer can
+be retried with the same groups. The destination must have its Keychain unlocked;
+authorize local Keychain access if macOS asks. It does not bypass that protection.
+Check with `keycheck` on the destination afterward, then use `keyload <group>`.
+
+Keep a password-manager copy (for example in Bitwarden) when you need an independent
+recovery source. To add a new item manually, enter it through the hidden prompt:
 
 ```sh
 keyset HF_TOKEN
@@ -131,11 +184,12 @@ not the value. Only enable lookups after importing the items. Prefer explicit
 loading for tokens used occasionally. Avoid `keyget` in recorded/agent sessions:
 it prints the secret. Keychain may ask you to authorize access locally.
 
-For the first move, save any still-needed credentials that exist only on the old
-Mac into your password manager through its UI. Do not export the entire Keychain,
-copy its database, or copy expiring AWS session tokens. Reauthenticate services
-such as GitHub and AWS on the new machine. Do not assume these custom Keychain
-items have synced just because both Macs use the same Apple account.
+Application-owned sign-ins stay with their applications: GitHub CLI, AWS SSO,
+Docker Desktop, Zed integrations, Claude and Codex. Reauthenticate those on the
+new machine; do not copy whole Keychain databases or token caches. The helper
+intentionally handles the listed custom shell groups, not every credential on a Mac.
+Do not assume custom Keychain items have synced just because both Macs use the
+same Apple account. Project-local `.env` files are also outside this migration.
 
 ### GitHub SSH after sign-in
 
