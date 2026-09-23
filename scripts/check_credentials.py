@@ -172,5 +172,67 @@ class KeychainDiagnosticsTests(unittest.TestCase):
             self.assertNotIn(value.encode().hex(), str(error.exception))
 
 
+class ShellAutoloadTests(unittest.TestCase):
+    def setUp(self):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        self.home = Path(directory.name)
+        self.calls = self.home / "calls"
+        self.env = {"HOME": str(self.home), "USER": "fixture", "PATH": f"{self.home}:/usr/bin:/bin",
+                    "TEST_CALLS": str(self.calls),
+                    "SHELL_HELPER": str(Path(__file__).resolve().parent.parent / "zsh/keychain.zsh")}
+        programs = {
+            "dotfiles-credentials": '''#!/bin/sh
+case "$1:$2" in
+  check:) test "$TEST_LOCKED" != 1;;
+  names:huggingface) echo HF_TOKEN;;
+  names:npm) echo NPM_TOKEN;;
+  names:docker) printf 'DOCKER_HUB_USERNAME\\nDOCKER_TOKEN\\n';;
+  *) exit 1;;
+esac
+''',
+            "security": '''#!/bin/sh
+test "$1" = find-generic-password || exit 1
+test "$4" = -s || exit 1
+printf '%s\\n' "$5" >> "$TEST_CALLS"
+test "$5" != "$TEST_MISSING" || exit 44
+printf 'synthetic-%s\\n' "$5"
+''',
+        }
+        for name, source in programs.items():
+            path = self.home / name
+            path.write_text(source)
+            path.chmod(0o700)
+
+    def run_shell(self, checks, **env):
+        result = subprocess.run(["/bin/zsh", "-dfc", 'source "$SHELL_HELPER"; keyautoload; ' + checks],
+                                env={**self.env, **env}, capture_output=True)
+        self.assertEqual(result.returncode, 0, "Shell assertions failed")
+        self.assertEqual(result.stdout, b"")
+        self.assertEqual(result.stderr, b"")
+
+    def test_everyday_groups_load_quietly_and_nested_load_reuses_values(self):
+        self.run_shell('''[[ $HF_TOKEN == synthetic-HF_TOKEN && $NPM_TOKEN == synthetic-NPM_TOKEN ]] || exit 1
+[[ $DOCKER_HUB_USERNAME == synthetic-DOCKER_HUB_USERNAME && $DOCKER_TOKEN == synthetic-DOCKER_TOKEN ]] || exit 1
+[[ $DOCKER_HUB_PASSWORD == $DOCKER_TOKEN ]] || exit 1
+[[ -z ${GH_TOKEN+x} && -z ${AWS_SESSION_TOKEN+x} && -z ${GITHUB_PERSONAL_ACCESS_TOKEN+x} ]] || exit 1
+keyautoload''')
+        self.assertEqual(len(self.calls.read_text().splitlines()), 4)
+
+    def test_existing_overrides_are_preserved(self):
+        self.run_shell('[[ $HF_TOKEN == override && $DOCKER_HUB_PASSWORD == explicit ]]',
+                       HF_TOKEN="override", DOCKER_HUB_PASSWORD="explicit")
+        self.assertNotIn("HF_TOKEN", self.calls.read_text())
+
+    def test_missing_group_does_not_export_half_a_group(self):
+        self.run_shell('[[ -n $HF_TOKEN && -z ${DOCKER_TOKEN+x} && -z ${DOCKER_HUB_USERNAME+x} ]]',
+                       TEST_MISSING="DOCKER_TOKEN")
+
+    def test_locked_keychain_and_opt_out_do_not_read_items(self):
+        for env in [{"TEST_LOCKED": "1"}, {"DOTFILES_KEYCHAIN_AUTOLOAD": "0"}]:
+            self.run_shell('[[ -z ${HF_TOKEN+x} && -z ${DOCKER_TOKEN+x} ]]', **env)
+            self.assertFalse(self.calls.exists())
+
+
 if __name__ == "__main__":
     unittest.main()

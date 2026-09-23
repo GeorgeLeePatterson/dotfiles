@@ -42,13 +42,15 @@ backups=$(find "$HOME/.local/state/dotfiles/backups" -mindepth 1 -maxdepth 1 -ty
 /bin/bash "$repo/setup.sh" --config-only > "$fixture/second.log"
 [[ $(find "$HOME/.local/state/dotfiles/backups" -mindepth 1 -maxdepth 1 -type d | wc -l) == "$backups" ]] || { printf "FAIL: line %s\n" "$LINENO" >&2; exit 1; }
 [[ $(git config --global --get-all include.path | wc -l | tr -d ' ') == 2 ]] || { printf "FAIL: line %s\n" "$LINENO" >&2; exit 1; }
-# No private overrides in this home: neither mode should try to access the Keychain.
+# Non-TTY shells do not perform automatic Keychain reads.
 env -i HOME="$HOME" USER=fixture TERM=xterm-256color PATH=/usr/bin:/bin:/usr/sbin:/sbin /bin/zsh -c 'print -r -- NONINTERACTIVE_OK' > "$fixture/noninteractive.out" 2> "$fixture/noninteractive.err"
 [[ $(cat "$fixture/noninteractive.out") == NONINTERACTIVE_OK && ! -s "$fixture/noninteractive.err" ]] || { printf "FAIL: line %s\n" "$LINENO" >&2; exit 1; }
 env -i HOME="$HOME" USER=fixture TERM=xterm-256color PATH=/usr/bin:/bin:/usr/sbin:/sbin /bin/zsh -ic 'cd /; [[ $PWD == / ]] && print -r -- INTERACTIVE_OK' > "$fixture/interactive.out" 2> "$fixture/interactive.err"
 [[ $(cat "$fixture/interactive.out") == INTERACTIVE_OK ]] || { printf "FAIL: line %s\n" "$LINENO" >&2; exit 1; }
 if [[ -s "$fixture/interactive.err" ]]; then cat "$fixture/interactive.err" >&2; exit 1; fi
-/usr/bin/script -q "$fixture/tty.log" env -i HOME="$HOME" USER="$(id -un)" TERM=xterm-256color PATH=/usr/bin:/bin:/usr/sbin:/sbin /bin/zsh -ic 'print -r -- TTY_OK' > "$fixture/tty.out" 2>&1
+# The TTY fixture must not read the real user's Keychain. Autoload behavior is
+# checked separately with synthetic entries by check_credentials.py.
+/usr/bin/script -q "$fixture/tty.log" env -i HOME="$HOME" USER="$(id -un)" DOTFILES_KEYCHAIN_AUTOLOAD=0 TERM=xterm-256color PATH=/usr/bin:/bin:/usr/sbin:/sbin /bin/zsh -ic 'print -r -- TTY_OK' > "$fixture/tty.out" 2>&1
 grep -q TTY_OK "$fixture/tty.log"
 if grep -Eiq 'not found|aborted|can.t change|parse error|permission denied' "$fixture/tty.log"; then cat "$fixture/tty.log" >&2; exit 1; fi
 # A checkout in .config must not turn any source into a self-referential symlink.

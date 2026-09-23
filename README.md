@@ -120,12 +120,21 @@ The shared `dotfiles-credentials` command inventories custom shell credentials b
 name and transfers selected groups. Values stay in macOS Keychain. It uses Python
 3.9+ supplied by Apple's command-line tools, with no third-party dependencies.
 
+New interactive terminals automatically load the `huggingface`, `npm`, and `docker`
+groups when available. No per-terminal commands are required. Startup is quiet,
+preserves existing environment overrides, and skips missing groups or a locked
+Keychain without opening password dialogs. Scripts inherit the terminal's exports.
+This configures terminal environments, not apps launched separately from the Dock.
+
 ```sh
 keycheck              # names and presence only; never values
-keyload huggingface   # export this group's values into the current shell
-keyload npm
-keyload docker
+keyload huggingface   # optional: reload after changing a stored token
+keyload npm           # optional: reload into an already-open terminal
+keyload docker        # optional: reload into an already-open terminal
 ```
+
+To disable automatic loading on a particular machine, set
+`DOTFILES_KEYCHAIN_AUTOLOAD=0` in its private `~/.zshrc.local`.
 
 | Group | Keychain items | Environment when loaded |
 | --- | --- | --- |
@@ -147,7 +156,8 @@ dotfiles-credentials migrate
 
 It reads literal credential assignments and recognized aliases in `.zshrc.local`
 and `.bash_profile`, verifies Keychain storage before removing plaintext, and
-removes automatic credential exports. Existing different values cause it to stop;
+removes the old scattered credential exports. The shared shell handles automatic
+loading of the three everyday groups. Existing different values cause it to stop;
 the old Bash npm value is retained separately if it differs from the active Keychain
 value. Private rollback copies live in `~/.local/state/dotfiles/credential-backups/`.
 Those copies contain the old secrets: retain privately or delete after validating
@@ -177,7 +187,8 @@ unlock-keychain` command does **not** unlock a later SSH connection. A desktop l
 also does not guarantee that SSH can access the Keychain. Update dotfiles on both
 Macs before transferring. Item-specific access approval may still be necessary
 locally. No Keychain protection or lock setting is disabled.
-Check with `keycheck` on the destination afterward, then use `keyload <group>`.
+Open a new terminal on the destination afterward; the three everyday groups load
+automatically. `keyload <group>` is also available to refresh an existing terminal.
 
 Keep a password-manager copy (for example in Bitwarden) when you need an independent
 recovery source. To add a new item manually, enter it through the hidden prompt:
@@ -188,10 +199,9 @@ keyenv HF_TOKEN
 ```
 
 `keyset` stores it under the current macOS account. `keyenv` exports it into the
-current shell without printing it. If you need automatic interactive-shell
-loading, add `keyenv HF_TOKEN` to `~/.zshrc.local`; the file contains the lookup,
-not the value. Only enable lookups after importing the items. Prefer explicit
-loading for tokens used occasionally. Avoid `keyget` in recorded/agent sessions:
+current shell without printing it. The three everyday groups load automatically;
+additional occasional tokens can still use `keyenv` or `keyload github-pat`.
+Avoid `keyget` in recorded/agent sessions:
 it prints the secret. Keychain may ask you to authorize access locally.
 
 Application-owned sign-ins stay with their applications: GitHub CLI, AWS SSO,
