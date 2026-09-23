@@ -165,8 +165,18 @@ This uses already-trusted SSH and sends values directly to the receiving Mac's
 Keychain over encrypted SSH stdin. There is no export file. The receiver uses its
 own macOS account, so different account names are supported. Matching entries are
 retained; different existing entries stop the import. A failed partial transfer can
-be retried with the same groups. The destination must have its Keychain unlocked;
-authorize local Keychain access if macOS asks. It does not bypass that protection.
+be retried with the same groups. Run the transfer from an interactive terminal.
+If the receiving Keychain is locked, the helper asks for that Mac's Keychain
+password (normally its login password) at a hidden prompt. It forwards the password
+over the same encrypted SSH connection and unlocks with Apple's Keychain API.
+Neither the password nor the selected tokens enter command arguments or files.
+Tokens are read and sent only after the receiver confirms it is ready.
+
+Unlock and import stay in one SSH session: a separate `ssh ... security
+unlock-keychain` command does **not** unlock a later SSH connection. A desktop login
+also does not guarantee that SSH can access the Keychain. Update dotfiles on both
+Macs before transferring. Item-specific access approval may still be necessary
+locally. No Keychain protection or lock setting is disabled.
 Check with `keycheck` on the destination afterward, then use `keyload <group>`.
 
 Keep a password-manager copy (for example in Bitwarden) when you need an independent
