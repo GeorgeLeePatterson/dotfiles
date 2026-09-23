@@ -39,6 +39,8 @@
 
 !/defaults/
 /defaults/*
+!/defaults/gitconfig
+!/defaults/zshrc.local
 !/defaults/zed/
 /defaults/zed/*
 !/defaults/zed/settings.json

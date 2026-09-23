@@ -25,8 +25,7 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 brew "fzf-tab"
 
-# JavaScript and Python. Project-specific tools belong to their projects.
-brew "fnm"
+# JavaScript and Python. setup.sh installs NVM from its official release.
 brew "pnpm"
 brew "uv"
 

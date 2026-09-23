@@ -1,0 +1,4 @@
+# Personal identity for a new machine. setup.sh preserves an existing global identity.
+[user]
+    name = George Patterson
+    email = patterson.george@gmail.com

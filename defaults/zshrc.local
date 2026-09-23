@@ -1,0 +1,13 @@
+# Copied once to ~/.zshrc.local (mode 600), never linked or overwritten by setup.
+# Portable non-secret settings belong in the tracked Zsh files.
+# For a credential: run `keyset SERVICE_NAME`, then paste into its hidden prompt.
+# Load it only where needed with `keyenv VARIABLE_NAME SERVICE_NAME`.
+# Examples (enable only after adding the corresponding Keychain item):
+# keyenv HF_TOKEN
+# keyenv NPM_TOKEN
+# keyenv DOCKER_TOKEN
+# keyenv DOCKER_HUB_PASSWORD
+#
+# Prefer `gh auth login` over exporting GH_TOKEN globally; old tokens override
+# GitHub CLI's saved login. Prefer AWS profiles/SSO over copied session tokens.
+# Keep a password-manager copy of credentials you intend to use on other Macs.

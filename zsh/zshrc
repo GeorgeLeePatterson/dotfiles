@@ -25,7 +25,7 @@ _brew_prefix=${HOMEBREW_PREFIX:-/opt/homebrew}
 fpath=("$_brew_prefix/share/zsh/site-functions" "$_brew_prefix/share/zsh-completions" $fpath)
 [[ -d "$HOME/.zfunc" ]] && fpath+=("$HOME/.zfunc")
 zmodload zsh/complist
-autoload -Uz compinit -i  # Ignore insecure completion directories instead of prompting or trusting them.
+autoload -Uz compinit
 compinit -i  # Ignore insecure completion directories instead of prompting or trusting them.
 setopt COMPLETE_IN_WORD AUTO_LIST GLOB_DOTS
 zstyle ':completion:*' menu select
@@ -47,7 +47,7 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey '^[[A' history-beginning-search-backward-end
 bindkey '^[[B' history-beginning-search-forward-end
 
-(( $+commands[fnm] )) && eval "$(fnm env --shell zsh --use-on-cd)"
+[[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
 (( $+commands[atuin] )) && eval "$(atuin init zsh --disable-up-arrow)"
 (( $+commands[starship] )) && eval "$(starship init zsh)"
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)

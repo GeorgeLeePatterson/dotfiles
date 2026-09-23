@@ -7,6 +7,8 @@ export EDITOR=micro
 export VISUAL=$EDITOR
 export PAGER=less
 export BAT_PAGER='less -RF'
+export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-1}
+export RUST_BACKTRACE=${RUST_BACKTRACE:-full}
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export BUN_INSTALL="$HOME/.bun"
 typeset -U path
@@ -14,12 +16,8 @@ typeset -U path
 path=("$HOME/.local/bin" /opt/homebrew/bin /opt/homebrew/sbin /usr/local/bin
       "$HOME/.cargo/bin" "$PNPM_HOME" "$BUN_INSTALL/bin" "$HOME/.docker/bin"
       "$HOME/.lmstudio/bin" "$HOME/go/bin" $path)
-# fnm's persistent default makes Node available to non-interactive agent/tool shells.
-for _node_home in "${FNM_DIR:-$HOME/Library/Application Support/fnm}" "$XDG_DATA_HOME/fnm"; do
-  if [[ -x "$_node_home/aliases/default/bin/node" ]]; then
-    path=("$_node_home/aliases/default/bin" $path)
-    break
-  fi
-done
-unset _node_home
+# NVM also initializes in SSH/agent shells. Its normal startup preserves an
+# inherited NVM version, otherwise selecting the configured default quietly.
+export NVM_DIR="$HOME/.nvm"
+[[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
 [[ -r "$HOME/.zshenv.local" ]] && source "$HOME/.zshenv.local"
