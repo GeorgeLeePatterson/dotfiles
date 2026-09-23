@@ -1,0 +1,73 @@
+# Interactive Zsh configuration. Packages are installed by setup.sh, never at startup.
+[[ -o interactive ]] || return
+
+# Room for agent processes and file watchers, without lowering an inherited limit.
+() {
+  local soft=$(ulimit -Sn)
+  if [[ $soft != unlimited ]] && (( soft < 4096 )); then
+    ulimit -Sn 4096 2>/dev/null || true
+  fi
+}
+setopt AUTO_CD AUTO_PUSHD PUSHD_IGNORE_DUPS PUSHD_SILENT
+setopt EXTENDED_HISTORY SHARE_HISTORY HIST_EXPIRE_DUPS_FIRST HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS HIST_IGNORE_SPACE HIST_SAVE_NO_DUPS HIST_REDUCE_BLANKS HIST_VERIFY
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=1000000
+SAVEHIST=1000000
+
+source "$HOME/.config/zsh/aliases.zsh"
+source "$HOME/.config/zsh/keychain.zsh"
+# Prompt, pickers and line-editor plugins require a human terminal.
+if [[ -t 0 && -t 1 ]]; then
+# Homebrew packages replace Antidote/Oh My Zsh. One completion initialization.
+_brew_prefix=${HOMEBREW_PREFIX:-/opt/homebrew}
+[[ -d "$_brew_prefix" ]] || _brew_prefix=/usr/local
+fpath=("$_brew_prefix/share/zsh/site-functions" "$_brew_prefix/share/zsh-completions" $fpath)
+[[ -d "$HOME/.zfunc" ]] && fpath+=("$HOME/.zfunc")
+zmodload zsh/complist
+autoload -Uz compinit -i  # Ignore insecure completion directories instead of prompting or trusting them.
+compinit -i  # Ignore insecure completion directories instead of prompting or trusting them.
+setopt COMPLETE_IN_WORD AUTO_LIST GLOB_DOTS
+zstyle ':completion:*' menu select
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*'
+[[ -r "$_brew_prefix/share/fzf-tab/fzf-tab.zsh" ]] && source "$_brew_prefix/share/fzf-tab/fzf-tab.zsh"
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always "$realpath"'
+zstyle ':fzf-tab:*' switch-group ',' '.'
+
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_OPTS='--height=60% --border=sharp --layout=reverse --inline-info --prompt="∷ " --pointer="▶" --marker="⇒"'
+(( $+commands[fzf] )) && source <(fzf --zsh)
+bindkey -e
+autoload -Uz history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey '^[[A' history-beginning-search-backward-end
+bindkey '^[[B' history-beginning-search-forward-end
+
+(( $+commands[fnm] )) && eval "$(fnm env --shell zsh --use-on-cd)"
+(( $+commands[atuin] )) && eval "$(atuin init zsh --disable-up-arrow)"
+(( $+commands[starship] )) && eval "$(starship init zsh)"
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+[[ -r "$_brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && source "$_brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+[[ -r "$_brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "$_brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+unset _brew_prefix
+
+fi
+
+# Private machine configuration is never tracked.
+[[ -r "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
+# Exact paths work normally; fuzzy jumps and directory listings are only for a TTY.
+export _ZO_DOCTOR=0
+if [[ -t 0 && -t 1 ]] && (( $+commands[zoxide] )); then
+  eval "$(zoxide init zsh)"
+  cd() {
+    if [[ ! -t 0 || ! -t 1 ]]; then builtin cd -- "$@"; return $?; fi
+    if [[ $# -eq 1 && -d "$1" ]]; then __zoxide_cd "$@" || return $?;
+    else __zoxide_z "$@" || return $?; fi
+    ls
+  }
+fi

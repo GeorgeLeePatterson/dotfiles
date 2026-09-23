@@ -1,0 +1,14 @@
+# Login shells add Homebrew's manpages and environment, keeping fnm's default first.
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x /usr/local/bin/brew ]]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+for _node_home in "${FNM_DIR:-$HOME/Library/Application Support/fnm}" "$XDG_DATA_HOME/fnm"; do
+  if [[ -x "$_node_home/aliases/default/bin/node" ]]; then
+    path=("$_node_home/aliases/default/bin" $path)
+    break
+  fi
+done
+unset _node_home
+[[ -r "$HOME/.zprofile.local" ]] && source "$HOME/.zprofile.local"

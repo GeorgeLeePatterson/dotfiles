@@ -1,0 +1,16 @@
+[alias]
+    cla = clone --recurse-submodules
+    pa = pull --recurse-submodules
+[core]
+    pager = delta
+    autocrlf = input
+[fetch]
+    prune = true
+[init]
+    defaultBranch = main
+[delta]
+    line-numbers = true
+    hunk-header-style = omit
+    file-style = bold yellow ul
+    file-decoration-style = none
+    side-by-side = true

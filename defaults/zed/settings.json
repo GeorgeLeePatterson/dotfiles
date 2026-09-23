@@ -1,0 +1,646 @@
+{
+  "markdown_preview": {
+    "max_width": 1440.0,
+    "limit_content_width": true
+  },
+  "use_system_window_tabs": false,
+  "active_pane_modifiers": {
+    "border_size": 0.0,
+    "inactive_opacity": 0.8
+  },
+  "cli_default_open_behavior": "new_window",
+  "session": {
+    "trust_all_worktrees": true
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
+  "search": {
+    "center_on_match": true
+  },
+  "scroll_beyond_last_line": "vertical_scroll_margin",
+  "diff_view_style": "unified",
+  "agent_servers": {
+    "claude-acp": {
+      "type": "registry"
+    },
+    "codex-acp": {
+      "favorite_config_option_values": {
+        "model": [
+          "gpt-5.5"
+        ],
+        "reasoning_effort": [
+          "xhigh"
+        ]
+      },
+      "type": "registry",
+      "favorite_models": [
+        "gpt-5.2-codex/high"
+      ],
+      "default_config_options": {
+        "model": "gpt-5.4"
+      }
+    }
+  },
+  "colorize_brackets": true,
+  "completion_menu_scrollbar": "auto",
+  "enable_language_server": true,
+  "lsp_document_colors": "border",
+  "completions": {
+    "lsp": true,
+    "words": "enabled"
+  },
+  "autoscroll_on_clicks": true,
+  "excerpt_context_lines": 6,
+  "expand_excerpt_lines": 8,
+  "agent_buffer_font_size": 18.0,
+  "agent_ui_font_size": 18.0,
+  "on_last_window_closed": "quit_app",
+  "agent": {
+    "dock": "left",
+    "max_content_width": 2160,
+    "show_turn_stats": true,
+    "message_editor_min_lines": 4,
+    "expand_edit_card": false,
+    "notify_when_agent_waiting": "all_screens",
+    "play_sound_when_agent_done": "always",
+    "use_modifier_to_send": true,
+    "default_profile": "write"
+  },
+  "which_key": {
+    "delay_ms": 900,
+    "enabled": true
+  },
+  "edit_predictions": {
+    "provider": "zed",
+    "disabled_globs": [
+      ".env"
+    ]
+  },
+  "icon_theme": "Catppuccin Frapp\u00e9",
+  "theme": {
+    "mode": "system",
+    "light": "Bluloco Light Italic",
+    "dark": "Gruvbox Dark"
+  },
+  "base_keymap": "VSCode",
+  "buffer_font_family": "Intel One Mono",
+  "buffer_font_size": 24.0,
+  "buffer_font_features": {
+    "calt": true
+  },
+  "ui_font_family": "Inconsolata Nerd Font",
+  "ui_font_size": 24.0,
+  "ui_font_features": {
+    "calt": true
+  },
+  "title_bar": {
+    "show_branch_status_icon": true,
+    "show_menus": true
+  },
+  "minimap": {
+    "show": "auto",
+    "thumb_border": "left_only"
+  },
+  "inlay_hints": {
+    "show_background": true,
+    "enabled": false,
+    "show_type_hints": true,
+    "show_parameter_hints": true,
+    "show_other_hints": true,
+    "toggle_on_modifiers_press": {
+      "control": true,
+      "alt": true
+    }
+  },
+  "preferred_line_length": 100,
+  "show_wrap_guides": true,
+  "soft_wrap": "none",
+  "wrap_guides": [
+    100
+  ],
+  "unnecessary_code_fade": 0.5,
+  "project_panel": {
+    "button": true,
+    "default_width": 200,
+    "dock": "right",
+    "file_icons": true,
+    "folder_icons": true,
+    "git_status": true,
+    "indent_size": 16,
+    "auto_reveal_entries": true,
+    "auto_fold_dirs": true,
+    "show_diagnostics": "all"
+  },
+  "scrollbar": {
+    "show": "always",
+    "cursors": true,
+    "git_diff": true,
+    "search_results": true,
+    "selected_symbol": true,
+    "diagnostics": "warning"
+  },
+  "auto_signature_help": true,
+  "show_signature_help_after_edits": true,
+  "relative_line_numbers": "enabled",
+  "vim": {
+    "use_system_clipboard": "always",
+    "use_smartcase_find": true,
+    "toggle_relative_line_numbers": true
+  },
+  "diagnostics": {
+    "lsp_pull_diagnostics": {
+      "enabled": true
+    },
+    "button": true,
+    "include_warnings": true,
+    "inline": {
+      "enabled": true,
+      "update_debounce_ms": 150,
+      "padding": 4,
+      "min_column": 0,
+      "max_severity": null
+    }
+  },
+  "tabs": {
+    "file_icons": true,
+    "git_status": true,
+    "close_position": "right",
+    "show_diagnostics": "all"
+  },
+  "indent_guides": {
+    "enabled": true,
+    "line_width": 1,
+    "active_line_width": 3,
+    "coloring": "indent_aware",
+    "background_coloring": "indent_aware"
+  },
+  "toolbar": {
+    "breadcrumbs": true,
+    "quick_actions": true,
+    "selections_menu": true,
+    "agent_review": true,
+    "code_actions": true
+  },
+  "git_panel": {
+    "tree_view": true,
+    "button": true,
+    "dock": "right",
+    "default_width": 360,
+    "status_style": "icon",
+    "sort_by_path": true,
+    "scrollbar": {
+      "show": null
+    }
+  },
+  "debugger": {
+    "dock": "bottom",
+    "button": true
+  },
+  "outline_panel": {
+    "button": true,
+    "default_width": 300,
+    "dock": "right",
+    "file_icons": true,
+    "folder_icons": true,
+    "git_status": true,
+    "indent_size": 20,
+    "indent_guides": {
+      "show": "always"
+    },
+    "auto_reveal_entries": true,
+    "auto_fold_dirs": true,
+    "scrollbar": {
+      "show": null
+    }
+  },
+  "vim_mode": true,
+  "lsp": {
+    "json-language-server": {
+      "settings": {
+        "json": {
+          "schemas": [
+            {
+              "fileMatch": [
+                "*/docs/*/_meta.json"
+              ],
+              "url": "https://unpkg.com/@rspress/core@2.0.0-rc.3/meta-json-schema.json"
+            },
+            {
+              "fileMatch": [
+                "*/docs/_nav.json"
+              ],
+              "url": "https://unpkg.com/@rspress/core@2.0.0-rc.3/nav-json-schema.json"
+            }
+          ]
+        }
+      }
+    },
+    "vtsls": {
+      "settings": {
+        "javascript": {
+          "inlayHints": {
+            "parameterNames": {
+              "enabled": "all",
+              "suppressWhenArgumentMatchesName": false
+            },
+            "parameterTypes": {
+              "enabled": true
+            },
+            "variableTypes": {
+              "enabled": true,
+              "suppressWhenTypeMatchesName": true
+            },
+            "propertyDeclarationTypes": {
+              "enabled": true
+            },
+            "functionLikeReturnTypes": {
+              "enabled": true
+            },
+            "enumMemberValues": {
+              "enabled": true
+            }
+          }
+        },
+        "typescript": {
+          "inlayHints": {
+            "parameterNames": {
+              "enabled": "all",
+              "suppressWhenArgumentMatchesName": false
+            },
+            "parameterTypes": {
+              "enabled": true
+            },
+            "variableTypes": {
+              "enabled": true,
+              "suppressWhenTypeMatchesName": true
+            },
+            "propertyDeclarationTypes": {
+              "enabled": true
+            },
+            "functionLikeReturnTypes": {
+              "enabled": true
+            },
+            "enumMemberValues": {
+              "enabled": true
+            }
+          }
+        }
+      }
+    },
+    "typescript-language-server": {
+      "initialization_options": {
+        "provideHover": true,
+        "documentSymbols": true,
+        "preferences": {
+          "includeInlayParameterNameHints": "all",
+          "includeInlayParameterNameHintsWhenArgumentMatchesName": true,
+          "includeInlayFunctionParameterTypeHints": true,
+          "includeInlayVariableTypeHints": true,
+          "includeInlayVariableTypeHintsWhenTypeMatchesName": true,
+          "includeInlayPropertyDeclarationTypeHints": true,
+          "includeInlayFunctionLikeReturnTypeHints": true,
+          "includeInlayEnumMemberValueHints": true
+        }
+      }
+    },
+    "vscode-css-language-server": {
+      "settings": {
+        "css": {
+          "lint": {
+            "unknownAtRules": "ignore"
+          }
+        }
+      }
+    },
+    "rust-analyzer": {
+      "initialization_options": {
+        "cargo": {
+          "runBuildScripts": true,
+          "cfgs": [
+            "debug_assertions"
+          ]
+        },
+        "check": {
+          "command": "clippy",
+          "allTargets": true
+        },
+        "completion": {
+          "callable": {
+            "snippets": "fill_arguments"
+          },
+          "fullFunctionSignatures": {
+            "enable": true
+          },
+          "privateEditable": {
+            "enable": true
+          },
+          "snippets": {
+            "custom": {
+              "Arc::new": {
+                "postfix": "arc",
+                "body": [
+                  "Arc::new(${receiver})"
+                ],
+                "requires": "std::sync::Arc",
+                "scope": "expr"
+              },
+              "Some": {
+                "postfix": "some",
+                "body": [
+                  "Some(${receiver})"
+                ],
+                "scope": "expr"
+              },
+              "Ok": {
+                "postfix": "ok",
+                "body": [
+                  "Ok(${receiver})"
+                ],
+                "scope": "expr"
+              },
+              "Rc::new": {
+                "postfix": "rc",
+                "body": [
+                  "Rc::new(${receiver})"
+                ],
+                "requires": "std::rc::Rc",
+                "scope": "expr"
+              },
+              "Box::pin": {
+                "postfix": "boxpin",
+                "body": [
+                  "Box::pin(${receiver})"
+                ],
+                "requires": "std::boxed::Box",
+                "scope": "expr"
+              },
+              "vec!": {
+                "postfix": "vec",
+                "body": [
+                  "vec![${receiver}]"
+                ],
+                "description": "vec![]",
+                "scope": "expr"
+              }
+            }
+          },
+          "termSearch": {
+            "enable": true
+          }
+        },
+        "diagnostics": {
+          "experimental": {
+            "enable": false
+          },
+          "previewRustcOutput": true,
+          "styleLints": {
+            "enable": true
+          },
+          "useRustcErrorCode": true
+        },
+        "hover": {
+          "actions": {
+            "references": {
+              "enable": true
+            }
+          },
+          "maxSubstitutionLength": null,
+          "memoryLayout": {
+            "niches": true
+          },
+          "show": {
+            "enumVariants": 24,
+            "fields": 24,
+            "traitAssocItems": 24
+          }
+        },
+        "imports": {
+          "granularity": {
+            "group": "module"
+          },
+          "prefix": "self"
+        },
+        "inlayHints": {
+          "maxLength": null,
+          "bindingModeHints": {
+            "enable": true
+          },
+          "closingBraceHints": {
+            "minLines": 0
+          },
+          "closureCaptureHints": {
+            "enable": true
+          },
+          "closureReturnTypeHints": {
+            "enable": "always"
+          },
+          "discriminantHints": {
+            "enable": "always"
+          },
+          "expressionAdjustmentHints": {
+            "enable": "always",
+            "mode": "prefer_postfix"
+          },
+          "genericParameterHints": {
+            "lifetime": {
+              "enable": true
+            },
+            "type": {
+              "enable": true
+            }
+          },
+          "lifetimeElisionHints": {
+            "enable": "always",
+            "useParameterNames": true
+          },
+          "reborrowHints": {
+            "enable": "always"
+          }
+        },
+        "lens": {
+          "references": {
+            "adt": {
+              "enable": true
+            },
+            "enumVariant": {
+              "enable": true
+            },
+            "method": {
+              "enable": true
+            },
+            "trait": {
+              "enable": true
+            }
+          }
+        },
+        "procMacro": {
+          "enable": true,
+          "attributes": {
+            "enable": true
+          }
+        },
+        "references": {
+          "excludeTests": true
+        },
+        "runnables": {
+          "extraTestBinaryArgs": [
+            "--show-output"
+          ]
+        },
+        "rustfmt": {
+          "extraArgs": [
+            "+nightly",
+            "--unstable-features"
+          ],
+          "rangeFormatting": {
+            "enable": true
+          }
+        },
+        "semanticHighlighting": {
+          "operator": {
+            "enable": true,
+            "specialization": {
+              "enable": true
+            }
+          },
+          "punctuation": {
+            "enable": true,
+            "separate": {
+              "macro": {
+                "bang": true
+              }
+            },
+            "specialization": {
+              "enable": true
+            }
+          }
+        },
+        "signatureInfo": {
+          "detail": "parameters"
+        },
+        "typing": {
+          "autoClosingAngleBrackets": {
+            "enable": true
+          }
+        },
+        "workspace": {
+          "symbol": {
+            "search": {
+              "kind": "only_types"
+            }
+          }
+        }
+      }
+    },
+    "ruff": {
+      "initialization_options": {
+        "settings": {
+          "lineLength": 100
+        }
+      }
+    }
+  },
+  "languages": {
+    "CSS": {
+      "tab_size": 2,
+      "language_servers": [
+        "!tailwindcss-language-server",
+        "!typescript-language-server",
+        "!eslint",
+        "!prettier",
+        "vscode-css-language-server",
+        "..."
+      ],
+      "format_on_save": "on",
+      "formatter": [
+        {
+          "code_action": "source.fixAll.biome"
+        },
+        {
+          "language_server": {
+            "name": "biome"
+          }
+        }
+      ]
+    },
+    "JavaScript": {
+      "language_servers": [
+        "!tailwindcss-language-server",
+        "!typescript-language-server",
+        "..."
+      ]
+    },
+    "TypeScript": {
+      "language_servers": [
+        "!tailwindcss-language-server",
+        "!typescript-language-server",
+        "..."
+      ]
+    },
+    "TSX": {
+      "language_servers": [
+        "!tailwindcss-language-server",
+        "!typescript-language-server",
+        "..."
+      ]
+    },
+    "JSON": {
+      "language_servers": [
+        "!biome",
+        "..."
+      ]
+    },
+    "JSONC": {
+      "language_servers": [
+        "!biome",
+        "..."
+      ]
+    },
+    "Python": {
+      "show_edit_predictions": true,
+      "language_servers": [
+        "pyright",
+        "ruff"
+      ],
+      "format_on_save": "on",
+      "formatter": [
+        {
+          "code_action": "source.organizeImports.ruff"
+        },
+        {
+          "language_server": {
+            "name": "ruff"
+          }
+        }
+      ]
+    },
+    "Markdown": {
+      "soft_wrap": "editor_width"
+    },
+    "Plain Text": {
+      "soft_wrap": "editor_width"
+    },
+    "YAML": {
+      "format_on_save": "off"
+    }
+  },
+  "file_types": {
+    "HCL": [
+      "hcl",
+      "pkr.hcl"
+    ],
+    "YAML": [
+      "yml",
+      "yaml"
+    ]
+  },
+  "seed_search_query_from_cursor": "selection",
+  "autosave": "off",
+  "formatter": "auto",
+  "double_click_in_multibuffer": "select",
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  }
+}

@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+.zed/
+
+# Artifacts
+*.log
+.env
+*.bak
+*.backup
+
+# JS 
+node_modules/
+*.map
+
+# Python
+__pycache__/
+
+# Rust
+target/
+
+# AI
+.claude/
+.codex/
+.cursor/
+

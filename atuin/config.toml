@@ -1,0 +1,4 @@
+# Preserve the current session filter and avoid retaining common secret commands.
+update_check = true
+filter_mode_shell_up_key_binding = "session"
+history_filter = ['.*ms-python.*', '(?i)(token|password|secret|api_key)=', '^key(set|get|env) ']

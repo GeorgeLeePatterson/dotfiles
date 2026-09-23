@@ -1,0 +1,7 @@
+font-family = JetBrainsMono Nerd Font
+scrollback-limit = 1000000000
+theme = dark:Cobalt2,light:Gitlab Light
+keybind = ctrl+shift+enter=text:\n
+clipboard-read = allow
+clipboard-paste-bracketed-safe = true
+clipboard-paste-protection = false

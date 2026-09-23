@@ -1,0 +1,90 @@
+[
+  {
+    "context": "Editor && VimControl && !VimWaiting && !menu",
+    "bindings": {
+      "g shift-r": "editor::FindAllReferences",
+      "shift-k": "editor::Hover",
+      "g a": "editor::ToggleCodeActions",
+      "space c": [
+        "pane::CloseActiveItem",
+        {
+          "save_intent": "skip"
+        }
+      ]
+    }
+  },
+  {
+    "context": "Editor && VimControl && !VimWaiting && vim_operator == none && !menu",
+    "bindings": {
+      "] b": "pane::ActivateNextItem",
+      "[ b": "pane::ActivatePreviousItem",
+      "space space": "file_finder::Toggle"
+    }
+  },
+  {
+    "context": "MarkdownPreview",
+    "bindings": {
+      "] b": "pane::ActivateNextItem",
+      "[ b": "pane::ActivatePreviousItem",
+      "space c": [
+        "pane::CloseActiveItem",
+        {
+          "save_intent": "skip"
+        }
+      ]
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal && vim_operator == none && !VimWaiting",
+    "bindings": {
+      "~": null
+    }
+  },
+  {
+    "context": "Editor && vim_mode == visual && !VimObject && !VimWaiting && !menu",
+    "bindings": {
+      "tab": "vim::Indent",
+      "shift-tab": "vim::Outdent"
+    }
+  },
+  {
+    "context": "Editor && vim_mode != insert && !VimWaiting && !menu",
+    "bindings": {
+      "space o": "project_panel::ToggleFocus"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "h": "project_panel::CollapseSelectedEntry",
+      "l": "project_panel::ExpandSelectedEntry",
+      "o": "project_panel::Open",
+      "space o": "project_panel::ToggleFocus",
+      "space": null
+    }
+  },
+  {
+    "context": "Dock",
+    "bindings": {
+      "ctrl-w h": "workspace::ActivatePaneLeft",
+      "ctrl-w l": "workspace::ActivatePaneRight",
+      "ctrl-w k": "workspace::ActivatePaneUp",
+      "ctrl-w j": "workspace::ActivatePaneDown"
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      "escape": "workspace::ToggleLeftDock"
+    }
+  },
+  {
+    "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
+    "bindings": {
+      "Q": "vim::AnyQuotes",
+      "B": "vim::AnyBrackets",
+      "q": "vim::MiniQuotes",
+      "b": "vim::MiniBrackets"
+    }
+  }
+]

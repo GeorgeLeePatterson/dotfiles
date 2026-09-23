@@ -1,0 +1,4 @@
+--theme="auto:system"
+--theme-dark="gruvbox-dark"
+--theme-light="gruvbox-light"
+--italic-text=always

@@ -1,0 +1,25 @@
+# Every Zsh process reads this file. Keep it quiet: no network, UI, or keychain calls.
+export LANG=${LANG:-en_US.UTF-8}
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+export XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
+export EDITOR=micro
+export VISUAL=$EDITOR
+export PAGER=less
+export BAT_PAGER='less -RF'
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export BUN_INSTALL="$HOME/.bun"
+typeset -U path
+# Both Intel and Apple Silicon, plus existing tools installed outside Homebrew.
+path=("$HOME/.local/bin" /opt/homebrew/bin /opt/homebrew/sbin /usr/local/bin
+      "$HOME/.cargo/bin" "$PNPM_HOME" "$BUN_INSTALL/bin" "$HOME/.docker/bin"
+      "$HOME/.lmstudio/bin" "$HOME/go/bin" $path)
+# fnm's persistent default makes Node available to non-interactive agent/tool shells.
+for _node_home in "${FNM_DIR:-$HOME/Library/Application Support/fnm}" "$XDG_DATA_HOME/fnm"; do
+  if [[ -x "$_node_home/aliases/default/bin/node" ]]; then
+    path=("$_node_home/aliases/default/bin" $path)
+    break
+  fi
+done
+unset _node_home
+[[ -r "$HOME/.zshenv.local" ]] && source "$HOME/.zshenv.local"
