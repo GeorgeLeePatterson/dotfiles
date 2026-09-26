@@ -23,6 +23,24 @@ path+=(/Applications/Docker.app/Contents/Resources/bin
 # NVM also initializes in SSH/agent shells. Its normal startup preserves an
 # inherited NVM version, otherwise selecting the configured default quietly.
 export NVM_DIR="$HOME/.nvm"
+# Terminal apps can retain fnm's old environment even after it is uninstalled.
+# Retire only its runtime paths, then let NVM choose/preserve the Node version.
+() {
+  local entry name
+  local -a retained
+  for entry in "${path[@]}"; do
+    case "$entry" in
+      "$HOME/.fnm"|"$HOME/.fnm/"*|"$HOME/.local/share/fnm"|"$HOME/.local/share/fnm/"*|\
+      "$HOME/Library/Application Support/fnm"|"$HOME/Library/Application Support/fnm/"*|\
+      */fnm_multishells/*) continue ;;
+    esac
+    retained+=("$entry")
+  done
+  path=("${retained[@]}")
+  for name in ${(k)parameters}; do
+    [[ $name != FNM_* ]] || unset "$name"
+  done
+}
 [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
 [[ -r "$HOME/.zshenv.local" ]] && source "$HOME/.zshenv.local"
 # GUI-launched agents commonly use noninteractive Zsh and skip .zshrc. Load

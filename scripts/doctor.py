@@ -38,6 +38,17 @@ def main():
     missing = []
     print(f"Machine: {socket.gethostname()} | account: {pwd.getpwuid(os.getuid()).pw_name}")
     print('Checks apply to this process/session; another account or SSH login may differ.')
+    nvm = Path.home() / '.nvm'
+    node = shutil.which('node')
+    managed_node = node and Path(node).resolve().is_relative_to(nvm.resolve() / 'versions/node')
+    print('Node manager: ' + ('NVM' if managed_node else 'not using an NVM-installed Node; rerun setup and open a new shell'))
+    if not managed_node:
+        missing.append('NVM Node selection')
+    for relative in ['.fnm', '.local/share/fnm', '.local/state/fnm_multishells', 'Library/Application Support/fnm']:
+        if (Path.home() / relative).exists():
+            print(f'REVIEW obsolete fnm data: ~/{relative}')
+    if shutil.which('fnm'):
+        print('REVIEW fnm is still installed; NVM is the supported Node manager.')
     for command in BASE + (["tmux", "lazygit", "glow"] if args.dev else []):
         path = shutil.which(command)
         print(f"{'OK' if path else 'MISSING'} {command}: {path or 'run ./setup.sh' + (' --dev' if command in ['tmux', 'lazygit', 'glow'] else '')}")

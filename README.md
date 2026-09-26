@@ -285,7 +285,7 @@ git remote set-url origin git@github.com:GeorgeLeePatterson/dotfiles.git
 Zoxide learns directories as you visit them; its history is not copied between
 machines. Non-terminal scripts retain ordinary, quiet `cd` behavior.
 
-### Removing the short-lived fnm setup
+### NVM replaces the old fnm setup
 
 After pulling these changes and running `./setup.sh`, open a new terminal. Check:
 
@@ -296,8 +296,21 @@ node --version
 brew uninstall fnm
 ```
 
-This removes fnm itself. Its downloaded Node versions are left on disk; setup
-does not delete runtime data. There are no fnm hooks in the shared shell anymore.
+NVM is the only Node manager initialized by the shared shell. New shells remove
+inherited `FNM_*` variables and fnm runtime paths before initializing NVM, including
+stale paths retained by a terminal app. `dotfiles-doctor` checks which manager
+actually supplies Node and identifies obsolete fnm data.
+
+Homebrew uninstall does not remove fnm's downloaded Node versions or session
+links. When retiring an older installation, inspect `~/.local/share/fnm` (or
+`~/.fnm` / `~/Library/Application Support/fnm`) and
+`~/.local/state/fnm_multishells`. Preserve any needed global packages and confirm
+no running processes depend on those runtimes before deleting them. Setup does
+not silently delete runtime data on another machine.
+
+An already-open shell may still hold fnm's old directory-change hook in memory.
+After cleanup, close/reopen the terminal or run `exec zsh -l` once. New terminals
+do not require any manual initialization.
 
 ## Check the machine you are actually using
 

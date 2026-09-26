@@ -50,6 +50,14 @@ env -i DOTFILES_KEYCHAIN_AUTOLOAD=0 HOME="$HOME" USER=fixture TERM=xterm-256colo
 env -i DOTFILES_KEYCHAIN_AUTOLOAD=0 HOME="$HOME" USER=fixture TERM=xterm-256color PATH=/usr/bin:/bin:/usr/sbin:/sbin /bin/zsh -ic 'cd /; [[ $PWD == / ]] && print -r -- INTERACTIVE_OK' > "$fixture/interactive.out" 2> "$fixture/interactive.err"
 [[ $(cat "$fixture/interactive.out") == INTERACTIVE_OK ]] || { printf "FAIL: line %s\n" "$LINENO" >&2; exit 1; }
 if [[ -s "$fixture/interactive.err" ]]; then cat "$fixture/interactive.err" >&2; exit 1; fi
+# Simulate a terminal app still passing an obsolete fnm environment to a new shell.
+env -i HOME="$HOME" USER=fixture DOTFILES_KEYCHAIN_AUTOLOAD=0 FNM_DIR="$HOME/.local/share/fnm" FNM_MULTISHELL_PATH="$HOME/.local/state/fnm_multishells/old" FNM_NODE_DIST_MIRROR=https://example.invalid PATH="$HOME/.local/state/fnm_multishells/old/bin:$HOME/.local/share/fnm/node-versions/v24/installation/bin:$fixture/keep-fnm-tools/bin:/usr/bin:/bin:/usr/sbin:/sbin" EXPECTED_KEEP="$fixture/keep-fnm-tools/bin" /bin/zsh -c '
+  [[ -z ${FNM_DIR+x} && -z ${FNM_MULTISHELL_PATH+x} && -z ${FNM_NODE_DIST_MIRROR+x} ]] || exit 1
+  [[ $PATH != *fnm_multishells* && $PATH != *"/.local/share/fnm/"* ]] || exit 1
+  [[ ":$PATH:" == *":$EXPECTED_KEEP:"* ]] || exit 1
+  print -r -- FNM_RETIRED
+' > "$fixture/fnm.out" 2> "$fixture/fnm.err"
+[[ $(cat "$fixture/fnm.out") == FNM_RETIRED && ! -s "$fixture/fnm.err" ]] || { printf 'FAIL: inherited fnm environment\n' >&2; exit 1; }
 # The TTY fixture must not read the real user's Keychain. Autoload behavior is
 # checked separately with synthetic entries by check_credentials.py.
 /usr/bin/script -q "$fixture/tty.log" env -i HOME="$HOME" USER="$(id -un)" DOTFILES_KEYCHAIN_AUTOLOAD=0 TERM=xterm-256color PATH=/usr/bin:/bin:/usr/sbin:/sbin /bin/zsh -ic 'print -r -- TTY_OK' > "$fixture/tty.out" 2>&1
