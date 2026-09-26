@@ -181,28 +181,22 @@ class ShellAutoloadTests(unittest.TestCase):
         self.env = {"HOME": str(self.home), "USER": "fixture", "PATH": f"{self.home}:/usr/bin:/bin",
                     "TEST_CALLS": str(self.calls),
                     "SHELL_HELPER": str(Path(__file__).resolve().parent.parent / "zsh/keychain.zsh")}
-        programs = {
-            "dotfiles-credentials": '''#!/bin/sh
-case "$1:$2" in
-  check:) test "$TEST_LOCKED" != 1;;
-  names:huggingface) echo HF_TOKEN;;
-  names:npm) echo NPM_TOKEN;;
-  names:docker) printf 'DOCKER_HUB_USERNAME\\nDOCKER_TOKEN\\n';;
-  *) exit 1;;
-esac
-''',
-            "security": '''#!/bin/sh
-test "$1" = find-generic-password || exit 1
-test "$4" = -s || exit 1
-printf '%s\\n' "$5" >> "$TEST_CALLS"
-test "$5" != "$TEST_MISSING" || exit 44
-printf 'synthetic-%s\\n' "$5"
-''',
-        }
-        for name, source in programs.items():
-            path = self.home / name
-            path.write_text(source)
-            path.chmod(0o700)
+        helper = self.home / "dotfiles-credentials"
+        helper.write_text("#!/usr/bin/python3\n" + '''import importlib.util, os
+from pathlib import Path
+spec = importlib.util.spec_from_file_location("credentials", os.environ["CREDENTIALS_SOURCE"])
+m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+def ready(*args, **kwargs):
+    if os.environ.get("TEST_LOCKED") == "1": raise RuntimeError("locked")
+def read(name):
+    with open(os.environ["TEST_CALLS"], "a") as f: print(name, file=f)
+    return None if name == os.environ.get("TEST_MISSING") else "synthetic-" + name
+m.require_keychain_ready = ready
+m.read_value = read
+m.main()
+''')
+        helper.chmod(0o700)
+        self.env["CREDENTIALS_SOURCE"] = str(Path(__file__).with_name("credentials.py").resolve())
 
     def run_shell(self, checks, **env):
         result = subprocess.run(["/bin/zsh", "-dfc", 'source "$SHELL_HELPER"; keyautoload; ' + checks],
@@ -232,6 +226,59 @@ keyautoload''')
         for env in [{"TEST_LOCKED": "1"}, {"DOTFILES_KEYCHAIN_AUTOLOAD": "0"}]:
             self.run_shell('[[ -z ${HF_TOKEN+x} && -z ${DOCKER_TOKEN+x} ]]', **env)
             self.assertFalse(self.calls.exists())
+
+    def test_noninteractive_startup_loads_without_terminal_or_parent_exports(self):
+        (self.home / ".zshenv").symlink_to(Path(__file__).resolve().parent.parent / "zsh/zshenv")
+        result = subprocess.run(["/bin/zsh", "-c", '[[ $NPM_TOKEN == synthetic-NPM_TOKEN && $HF_TOKEN == synthetic-HF_TOKEN ]]'],
+                                env=self.env, capture_output=True)
+        self.assertEqual(result.returncode, 0, "Noninteractive startup must load credentials")
+        self.assertEqual(result.stdout + result.stderr, b"")
+
+
+class CredentialEnvironmentTests(unittest.TestCase):
+    def setUp(self):
+        self.stack = contextlib.ExitStack()
+        self.addCleanup(self.stack.close)
+        self.stack.enter_context(patch.dict(os.environ, {}, clear=True))
+        self.stack.enter_context(patch.object(credentials, "require_keychain_ready"))
+        self.reader = self.stack.enter_context(patch.object(credentials, "read_value", side_effect=lambda n: "synthetic-" + n))
+
+    def test_run_limits_exports_and_preserves_existing_values(self):
+        with patch.dict(os.environ, {"NPM_TOKEN": "override"}), patch.object(credentials.os, "execvpe") as execute:
+            credentials.run_with_credentials("npm", ["--", "pnpm", "install"])
+            execute.assert_called_once_with("pnpm", ["pnpm", "install"], {"NPM_TOKEN": "override"})
+            self.reader.assert_not_called()
+
+    def test_locked_run_fails_before_exec(self):
+        with patch.object(credentials, "require_keychain_ready", side_effect=RuntimeError("locked")), patch.object(credentials.os, "execvpe") as execute:
+            with self.assertRaisesRegex(RuntimeError, "locked"):
+                credentials.run_with_credentials("npm", ["pnpm", "install"])
+            execute.assert_not_called()
+            self.reader.assert_not_called()
+
+    def test_shell_protocol_quotes_secret_as_data(self):
+        value = "synthetic-'$(exit 91)\n; false"
+        with patch.object(credentials, "read_value", return_value=value), patch.object(credentials.sys.stdout, "isatty", return_value=False):
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                credentials.shell_environment()
+        # Capture synthetic exports; never run this test against a real Keychain.
+        code = output.getvalue() + "\n[[ $NPM_TOKEN == $EXPECTED ]]"
+        result = subprocess.run(["/bin/zsh", "-dfc", code], env={"EXPECTED": value}, capture_output=True)
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(result.stdout + result.stderr, b"")
+
+    def test_terminal_display_is_rejected(self):
+        with patch.object(credentials.sys.stdout, "isatty", return_value=True):
+            with self.assertRaisesRegex(RuntimeError, "terminal display"):
+                credentials.shell_environment()
+        self.reader.assert_not_called()
+
+    def test_empty_inherited_token_is_filled_and_archived_tokens_excluded(self):
+        with patch.dict(os.environ, {"NPM_TOKEN": ""}):
+            values = credentials.environment_for(credentials.EVERYDAY)
+        self.assertEqual(values["NPM_TOKEN"], "synthetic-NPM_TOKEN")
+        self.assertFalse(set(credentials.ARCHIVED) & values.keys())
 
 
 if __name__ == "__main__":

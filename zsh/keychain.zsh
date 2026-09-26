@@ -38,11 +38,7 @@ keyautoload() {
   [[ ${DOTFILES_KEYCHAIN_AUTOLOAD:-1} == 0 ]] && return 0
   # Do not open password dialogs in a locked SSH session. A fresh installation
   # may not have any of these entries yet, so missing groups are quiet too.
-  command dotfiles-credentials check >/dev/null 2>&1 || return 0
-  local group
-  for group in huggingface npm docker; do
-    keyload --automatic "$group" >/dev/null 2>&1
-  done
+  eval "$(command dotfiles-credentials shell-env)"
   return 0
 }
 

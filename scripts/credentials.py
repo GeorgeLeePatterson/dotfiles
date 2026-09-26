@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Small macOS shell-credential inventory, migration and direct SSH transfer.
 
-Values never go to stdout, command arguments, Git, or a transfer file.
+Diagnostics never print values. The internal shell-env protocol emits quoted
+exports into its calling shell; values never enter command arguments, Git, or
+a transfer file.
 The only retained plaintext files are private backups of files being cleaned.
 """
 import argparse
@@ -26,6 +28,7 @@ GROUPS = {
     "docker": ["DOCKER_HUB_USERNAME", "DOCKER_TOKEN"],
     "github-pat": ["GITHUB_PERSONAL_ACCESS_TOKEN"],
 }
+EVERYDAY = ["huggingface", "npm", "docker"]
 ARCHIVED = ["GH_TOKEN", "AWS_ACCESS_KEY_ID", "AWS_SESSION_TOKEN", "NPM_TOKEN_LEGACY_BASH"]
 KNOWN = {name for names in GROUPS.values() for name in names} | set(ARCHIVED)
 OLD_REFERENCES = {"DOCKER_HUB_PASSWORD": "DOCKER_TOKEN", "GITHUB_PERSONAL_ACCESS_TOKEN": "GH_TOKEN"}
@@ -134,6 +137,59 @@ def store(name, value):
 
 def names_for(groups):
     return list(dict.fromkeys(name for group in groups for name in GROUPS[group]))
+
+
+def environment_for(groups, automatic=False):
+    """Return exports without printing them; preserve inherited overrides.
+
+    Automatic startup never unlocks Keychain and tolerates unavailable groups.
+    Keep each group atomic so Docker cannot get half a credential pair.
+    """
+    exports = {}
+    ready = None
+    for group in groups:
+        pending = {}
+        try:
+            for name in GROUPS[group]:
+                if os.environ.get(name):
+                    pending[name] = os.environ[name]
+                    continue
+                if ready is None:
+                    require_keychain_ready()
+                    ready = True
+                value = read_value(name)
+                if not value:
+                    raise RuntimeError(f"{name}: not stored or accessible in this session.")
+                pending[name] = value
+        except (RuntimeError, OSError, subprocess.TimeoutExpired):
+            if automatic:
+                continue
+            raise
+        if group == "docker":
+            pending["DOCKER_HUB_PASSWORD"] = os.environ.get("DOCKER_HUB_PASSWORD") or pending["DOCKER_TOKEN"]
+        exports.update(pending)
+    return exports
+
+
+def shell_environment():
+    # This is a machine-consumed protocol, not a diagnostic. Never run it to
+    # display values. Quote every value: credentials are data, never shell code.
+    if os.environ.get("DOTFILES_KEYCHAIN_AUTOLOAD") == "0":
+        return
+    if sys.stdout.isatty():
+        raise RuntimeError("shell-env is for shell startup, not terminal display. Use status instead.")
+    for name, value in environment_for(EVERYDAY, automatic=True).items():
+        if not os.environ.get(name):
+            print(f"export {name}={shlex.quote(value)}")
+
+
+def run_with_credentials(group, command):
+    if command and command[0] == "--":
+        command = command[1:]
+    if not command:
+        raise RuntimeError("Usage: dotfiles-credentials run <group> -- <command> [arguments]")
+    environment = {**os.environ, **environment_for([group])}
+    os.execvpe(command[0], command, environment)
 
 
 def import_values(values):
@@ -325,6 +381,10 @@ def main():
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("status", help="List groups and item presence, never values")
     commands.add_parser("check", help="Check Keychain readiness without reading credentials")
+    commands.add_parser("shell-env", help=argparse.SUPPRESS)
+    run = commands.add_parser("run", help="Run a command with one Keychain group (also works outside Zsh)")
+    run.add_argument("group", choices=GROUPS)
+    run.add_argument("argv", nargs=argparse.REMAINDER)
     commands.add_parser("migrate", help="Move old shell literals into Keychain and remove automatic exports")
     commands.add_parser("import", help=argparse.SUPPRESS)
     commands.add_parser("receive", help=argparse.SUPPRESS)
@@ -348,6 +408,10 @@ def main():
         print("Keychain is unlocked and writable in this session.")
     elif args.command == "names":
         print("\n".join(GROUPS[args.group]))
+    elif args.command == "shell-env":
+        shell_environment()
+    elif args.command == "run":
+        run_with_credentials(args.group, args.argv)
     elif args.command == "migrate":
         migrate()
     elif args.command == "import":

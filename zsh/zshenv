@@ -1,4 +1,4 @@
-# Every Zsh process reads this file. Keep it quiet: no network, UI, or keychain calls.
+# Every Zsh process reads this file. Keep startup quiet; never unlock a Keychain.
 export LANG=${LANG:-en_US.UTF-8}
 export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
@@ -14,10 +14,20 @@ export BUN_INSTALL="$HOME/.bun"
 typeset -U path
 # Both Intel and Apple Silicon, plus existing tools installed outside Homebrew.
 path=("$HOME/.local/bin" /opt/homebrew/bin /opt/homebrew/sbin /usr/local/bin
+      /opt/homebrew/opt/libpq/bin /usr/local/opt/libpq/bin
       "$HOME/.cargo/bin" "$PNPM_HOME" "$BUN_INSTALL/bin" "$HOME/.docker/bin"
       "$HOME/.lmstudio/bin" "$HOME/go/bin" $path)
+# Docker Desktop's CLI remains discoverable before its first-launch symlinks.
+path+=(/Applications/Docker.app/Contents/Resources/bin
+        "$HOME/Applications/Docker.app/Contents/Resources/bin")
 # NVM also initializes in SSH/agent shells. Its normal startup preserves an
 # inherited NVM version, otherwise selecting the configured default quietly.
 export NVM_DIR="$HOME/.nvm"
 [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
 [[ -r "$HOME/.zshenv.local" ]] && source "$HOME/.zshenv.local"
+# GUI-launched agents commonly use noninteractive Zsh and skip .zshrc. Load
+# the same everyday groups there; interactive shells load after local overrides.
+if [[ ! -o interactive && ${DOTFILES_KEYCHAIN_AUTOLOAD:-1} != 0 ]] &&
+   (( $+commands[dotfiles-credentials] )); then
+  eval "$(command dotfiles-credentials shell-env)"
+fi

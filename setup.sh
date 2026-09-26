@@ -6,16 +6,21 @@ repo=$(cd "$(dirname "$0")" && pwd -P)
 config_only=0
 dry_run=0
 github_ssh=0
+dev=0
+apps=0
 for arg in "$@"; do
   case "$arg" in
     --config-only) config_only=1 ;;
     --dry-run) dry_run=1 ;;
     --github-ssh) github_ssh=1 ;;
+    --dev) dev=1 ;;
+    --apps) apps=1 ;;
     -h|--help)
-      printf 'Usage: %s [--config-only] [--dry-run] [--github-ssh]\n' "$0"
+      printf 'Usage: %s [--config-only] [--dry-run] [--github-ssh] [--dev] [--apps]\n' "$0"
       printf 'Install missing CLI tools, Node 24, and link personal configuration.\n'
       printf 'Existing files are backed up; packages are never removed or upgraded.\n'
       printf 'Add --github-ssh for GitHub browser sign-in and SSH key enrollment.\n'
+      printf 'Docker Desktop is baseline. Add --dev for extra CLI tools or --apps for desktop apps.\n'
       exit 0 ;;
     *) printf 'Unknown option: %s\n' "$arg" >&2; exit 2 ;;
   esac
@@ -62,6 +67,8 @@ if (( ! config_only )); then
   if (( dry_run )); then
     printf 'Install Homebrew if missing, then missing packages from %s/Brewfile.\n' "$repo"
     printf 'Install NVM if missing; install Node 24 if no NVM default is configured.\n'
+    (( ! dev )) || printf 'Install missing packages from Brewfile.dev (tmux, lazygit, glow).\n'
+    (( ! apps )) || printf 'Install missing applications from Brewfile.apps; preserve manual installs.\n'
   else
     brew_bin=''
     for candidate in /opt/homebrew/bin/brew /usr/local/bin/brew; do
@@ -79,6 +86,11 @@ if (( ! config_only )); then
     fi
     eval "$("$brew_bin" shellenv)"
     HOMEBREW_NO_AUTO_UPDATE=1 "$brew_bin" bundle install --file="$repo/Brewfile" --no-upgrade
+    for profile in dev apps; do
+      if [[ $profile == dev && $dev == 1 || $profile == apps && $apps == 1 ]]; then
+        HOMEBREW_NO_AUTO_UPDATE=1 "$brew_bin" bundle install --file="$repo/Brewfile.$profile" --no-upgrade
+      fi
+    done
     # Keep existing NVM installations and defaults. Pin the bootstrap release;
     # let our tracked shell files handle initialization, not NVM's installer.
     (
@@ -114,6 +126,7 @@ link_file zsh/zshrc "$HOME/.zshrc"
 link_file zsh/aliases.zsh "$HOME/.config/zsh/aliases.zsh"
 link_file zsh/keychain.zsh "$HOME/.config/zsh/keychain.zsh"
 link_file scripts/credentials.py "$HOME/.local/bin/dotfiles-credentials"
+link_file scripts/doctor.py "$HOME/.local/bin/dotfiles-doctor"
 for relative in starship.toml ghostty/config bat/config fd/ignore atuin/config.toml micro/settings.json micro/bindings.json git/ignore; do
   link_file "$relative" "$HOME/.config/$relative"
 done
@@ -169,6 +182,8 @@ if (( github_ssh )); then
   fi
 fi
 if (( ! dry_run )); then
-  printf '\nReady. Open a new terminal to use the setup.\n'
-  printf 'Machine-only settings and secrets belong in ~/.zshrc.local or ~/.zshenv.local.\n'
+  printf '\nConfiguration applied. Open a new terminal, then run dotfiles-doctor.\n'
+  printf 'Docker Desktop may need its first-launch setup. Project commands own containers and databases.\n'
+  printf 'Use dotfiles-doctor --apps --dev or --project <path> to check those prerequisites too.\n'
+  printf 'Machine-only preferences belong in private shell overrides; credentials belong in Keychain.\n'
 fi

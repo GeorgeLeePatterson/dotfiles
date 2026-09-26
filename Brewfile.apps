@@ -1,0 +1,13 @@
+# Keep manual installations; never replace an existing app to enroll it in Brew.
+{
+  "brave-browser" => "Brave Browser.app",
+  "ghostty" => "Ghostty.app",
+  "slack" => "Slack.app",
+  "zed" => "Zed.app",
+  "claude" => "Claude.app",
+  "codex-app" => "Codex.app",
+}.each do |package, app|
+  unless File.directory?("/Applications/#{app}") || File.directory?(File.expand_path("~/Applications/#{app}"))
+    cask package
+  end
+end

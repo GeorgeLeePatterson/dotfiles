@@ -60,9 +60,8 @@ fi
 # Private machine configuration is never tracked.
 [[ -r "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
-# Normal terminals get everyday credentials automatically. Scripts/agent pipes
-# inherit their parent environment without performing new Keychain reads.
-if [[ -t 0 && -t 1 ]]; then keyautoload; fi
+# Also covers interactive shells launched by tools without a human terminal.
+keyautoload
 
 # Exact paths work normally; fuzzy jumps and directory listings are only for a TTY.
 export _ZO_DOCTOR=0

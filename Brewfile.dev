@@ -1,0 +1,4 @@
+# Optional conveniences used on the personal Mac. Docker is in the base profile.
+brew "tmux"
+brew "lazygit"
+brew "glow"

@@ -1,13 +1,9 @@
 # Copied once to ~/.zshrc.local (mode 600), never linked or overwritten by setup.
 # Portable non-secret settings belong in the tracked Zsh files.
-# Inventory: keycheck. Load a group when needed: keyload huggingface|npm|docker|github-pat
+# Inventory: keycheck. Everyday groups load automatically when Keychain is accessible.
+# Optional refresh for this shell: keyload huggingface|npm|docker|github-pat
 # For a credential: run `keyset SERVICE_NAME`, then paste into its hidden prompt.
-# Load it only where needed with `keyenv VARIABLE_NAME SERVICE_NAME`.
-# Examples (enable only after adding the corresponding Keychain item):
-# keyenv HF_TOKEN
-# keyenv NPM_TOKEN
-# keyenv DOCKER_TOKEN
-# keyenv DOCKER_HUB_PASSWORD
+# Put DOTFILES_KEYCHAIN_AUTOLOAD=0 in ~/.zshenv.local to disable it for all shells.
 #
 # Prefer `gh auth login` over exporting GH_TOKEN globally; old tokens override
 # GitHub CLI's saved login. Prefer AWS profiles/SSO over copied session tokens.

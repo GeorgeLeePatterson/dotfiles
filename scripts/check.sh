@@ -42,10 +42,12 @@ backups=$(find "$HOME/.local/state/dotfiles/backups" -mindepth 1 -maxdepth 1 -ty
 /bin/bash "$repo/setup.sh" --config-only > "$fixture/second.log"
 [[ $(find "$HOME/.local/state/dotfiles/backups" -mindepth 1 -maxdepth 1 -type d | wc -l) == "$backups" ]] || { printf "FAIL: line %s\n" "$LINENO" >&2; exit 1; }
 [[ $(git config --global --get-all include.path | wc -l | tr -d ' ') == 2 ]] || { printf "FAIL: line %s\n" "$LINENO" >&2; exit 1; }
-# Non-TTY shells do not perform automatic Keychain reads.
-env -i HOME="$HOME" USER=fixture TERM=xterm-256color PATH=/usr/bin:/bin:/usr/sbin:/sbin /bin/zsh -c 'print -r -- NONINTERACTIVE_OK' > "$fixture/noninteractive.out" 2> "$fixture/noninteractive.err"
+# The disposable-home checks never access the real Keychain. Synthetic startup
+# credential loading is exercised separately by check_credentials.py.
+export DOTFILES_KEYCHAIN_AUTOLOAD=0
+env -i DOTFILES_KEYCHAIN_AUTOLOAD=0 HOME="$HOME" USER=fixture TERM=xterm-256color PATH=/usr/bin:/bin:/usr/sbin:/sbin /bin/zsh -c 'print -r -- NONINTERACTIVE_OK' > "$fixture/noninteractive.out" 2> "$fixture/noninteractive.err"
 [[ $(cat "$fixture/noninteractive.out") == NONINTERACTIVE_OK && ! -s "$fixture/noninteractive.err" ]] || { printf "FAIL: line %s\n" "$LINENO" >&2; exit 1; }
-env -i HOME="$HOME" USER=fixture TERM=xterm-256color PATH=/usr/bin:/bin:/usr/sbin:/sbin /bin/zsh -ic 'cd /; [[ $PWD == / ]] && print -r -- INTERACTIVE_OK' > "$fixture/interactive.out" 2> "$fixture/interactive.err"
+env -i DOTFILES_KEYCHAIN_AUTOLOAD=0 HOME="$HOME" USER=fixture TERM=xterm-256color PATH=/usr/bin:/bin:/usr/sbin:/sbin /bin/zsh -ic 'cd /; [[ $PWD == / ]] && print -r -- INTERACTIVE_OK' > "$fixture/interactive.out" 2> "$fixture/interactive.err"
 [[ $(cat "$fixture/interactive.out") == INTERACTIVE_OK ]] || { printf "FAIL: line %s\n" "$LINENO" >&2; exit 1; }
 if [[ -s "$fixture/interactive.err" ]]; then cat "$fixture/interactive.err" >&2; exit 1; fi
 # The TTY fixture must not read the real user's Keychain. Autoload behavior is

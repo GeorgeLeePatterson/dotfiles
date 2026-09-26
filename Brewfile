@@ -2,6 +2,11 @@
 brew "git"
 brew "gh"
 brew "awscli"
+brew "libpq" # psql/pg_dump clients; no database service is started
+# Docker is baseline. Preserve an app installed manually instead of adopting it.
+unless File.directory?("/Applications/Docker.app") || File.directory?(File.expand_path("~/Applications/Docker.app"))
+  cask "docker-desktop"
+end
 brew "git-delta"
 brew "git-lfs"
 brew "jq"

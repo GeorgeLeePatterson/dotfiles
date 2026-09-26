@@ -3,6 +3,8 @@
 !/.gitignore
 !/README.md
 !/Brewfile
+!/Brewfile.dev
+!/Brewfile.apps
 !/setup.sh
 !/starship.toml
 !/zsh/
@@ -37,6 +39,7 @@
 !/scripts/check.sh
 !/scripts/credentials.py
 !/scripts/check_credentials.py
+!/scripts/doctor.py
 .DS_Store
 
 !/defaults/
