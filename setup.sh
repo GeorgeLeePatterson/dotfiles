@@ -79,18 +79,23 @@ if (( ! config_only )); then
       installer=$(mktemp -t dotfiles-homebrew)
       trap 'rm -f "$installer"' EXIT
       curl --fail --location --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh -o "$installer"
-      /bin/bash "$installer"
+      (umask 022; /bin/bash "$installer")
       rm -f "$installer"
       trap - EXIT
       if [[ -x /opt/homebrew/bin/brew ]]; then brew_bin=/opt/homebrew/bin/brew; else brew_bin=/usr/local/bin/brew; fi
     fi
     eval "$("$brew_bin" shellenv)"
-    HOMEBREW_NO_AUTO_UPDATE=1 "$brew_bin" bundle install --file="$repo/Brewfile" --no-upgrade
-    for profile in dev apps; do
-      if [[ $profile == dev && $dev == 1 || $profile == apps && $apps == 1 ]]; then
-        HOMEBREW_NO_AUTO_UPDATE=1 "$brew_bin" bundle install --file="$repo/Brewfile.$profile" --no-upgrade
-      fi
-    done
+    # Casks may create root-owned system directories through sudo. Keep their
+    # normal read/traverse permissions; the parent retains 077 for private files.
+    (
+      umask 022
+      HOMEBREW_NO_AUTO_UPDATE=1 "$brew_bin" bundle install --file="$repo/Brewfile" --no-upgrade
+      for profile in dev apps; do
+        if [[ $profile == dev && $dev == 1 || $profile == apps && $apps == 1 ]]; then
+          HOMEBREW_NO_AUTO_UPDATE=1 "$brew_bin" bundle install --file="$repo/Brewfile.$profile" --no-upgrade
+        fi
+      done
+    )
     # Keep existing NVM installations and defaults. Pin the bootstrap release;
     # let our tracked shell files handle initialization, not NVM's installer.
     (

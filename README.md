@@ -23,8 +23,10 @@ The script:
 1. Installs Homebrew from its official installer if necessary. It may ask for your
    Mac administrator password; run the script as your normal user, not with sudo.
 2. Installs missing packages from `Brewfile`, including PostgreSQL client tools and
-   Docker Desktop, without upgrading or removing others. It preserves an existing
-   manually installed Docker app. No database, container, or VM is started.
+  Docker Desktop, without upgrading or removing others. It preserves an existing
+   manually installed Docker app. Homebrew may request administrator approval for
+   Docker's system CLI links. Packages use normal permissions; private configuration
+   uses owner-only permissions. No database, container, or VM is started.
 3. Installs NVM from its official release if missing. New machines get Node 24;
    existing NVM installations, versions and defaults stay.
 4. Links `.zshenv`, `.zprofile`, `.zshrc`, the prompt, Ghostty and small tool configs.
