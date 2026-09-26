@@ -81,4 +81,28 @@ cp "$HOME/.gitconfig" "$fixture/original.gitconfig"
 /bin/bash "$repo/setup.sh" --config-only > "$fixture/identity.log"
 cmp "$fixture/original.gitconfig" "$HOME"/.local/state/dotfiles/backups/*/.gitconfig
 [[ $(git config --global user.email) == 'patterson.george@gmail.com' ]] || { printf "FAIL: line %s\n" "$LINENO" >&2; exit 1; }
-printf 'PASS: syntax, dry run, identity defaults and preservation, project directories, repeat run, backups, Zed preservation, quiet shell, in-place checkout.\n'
+# Exercise the real package-install flow with a fake Homebrew/NVM in a disposable
+# checkout. Only external executable discovery is redirected; no packages install.
+mkdir -p "$fixture/fake-brew" "$fixture/in-place/.nvm/alias"
+cat > "$fixture/fake-brew/brew" <<'BREW'
+#!/bin/bash
+case "$1" in
+  shellenv) exit 0 ;;
+  bundle) printf '%s %s\n' "${4##*/}" "$(umask)" >> "$DOTFILES_TEST_BREW_LOG" ;;
+  *) exit 93 ;;
+esac
+BREW
+chmod 700 "$fixture/fake-brew/brew"
+printf '24\n' > "$fixture/in-place/.nvm/alias/default"
+printf 'nvm() { printf "v24.0.0\\n"; }\n' > "$fixture/in-place/.nvm/nvm.sh"
+python3 - "$fixture/in-place/.config/setup.sh" "$fixture/fake-brew/brew" <<'PYTEST'
+from pathlib import Path
+import sys
+p = Path(sys.argv[1])
+p.write_text(p.read_text().replace('/opt/homebrew/bin/brew', sys.argv[2]).replace('/usr/local/bin/brew', sys.argv[2]))
+PYTEST
+env HOME="$fixture/in-place" DOTFILES_TEST_BREW_LOG="$fixture/brew-modes" /bin/bash "$fixture/in-place/.config/setup.sh" --apps --dev > "$fixture/packages.log"
+[[ $(wc -l < "$fixture/brew-modes" | tr -d ' ') == 3 ]] || { printf 'FAIL: expected three package profiles\n' >&2; exit 1; }
+[[ $(awk '$NF != "0022" {print}' "$fixture/brew-modes") == '' ]] || { printf 'FAIL: package install inherited private umask\n' >&2; exit 1; }
+[[ $(stat -f '%Lp' "$fixture/in-place/.zshrc.local") == 600 ]] || { printf 'FAIL: private config permissions changed\n' >&2; exit 1; }
+printf 'PASS: syntax, dry run, identity defaults and preservation, project directories, repeat run, backups, Zed preservation, quiet shell, in-place checkout, package/private permission separation.\n'
